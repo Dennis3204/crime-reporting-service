@@ -11,4 +11,4 @@ const getCollectionFn = (collection) => {
   };
 };
 
-// TODO: Export references to collections by calling getCollectionFn
+export const reports = getCollectionFn("reports");

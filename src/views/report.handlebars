@@ -1,0 +1,21 @@
+<main>
+    <h1>{{title}}</h1>
+    <h2>Details</h2>
+    <dl>
+        <dt>Author ID:</dt>
+        <dd>{{author_id}}</dd>
+        <dt>Classification:</dt>
+        <dd>{{crime}}</dd>
+        <dt>Location:</dt>
+        <dd>{{area}}, {{city}}, {{state}}</dd>
+    </dl>
+    <h2>Description</h2>
+    <p>{{desc}}</p>
+    <h2>Comments</h2>
+    {{#each comments}}
+        <p>{{comment}}</p>
+        <div>Posted by user with ID {{user_id}}</div>
+    {{else}}
+        <p>No comments yet.</p>
+    {{/each}}
+</main>
