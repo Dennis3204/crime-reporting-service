@@ -1,13 +1,14 @@
 import express from "express";
 import homeRoutes from "./home.js";
 import reportsRoutes from "./reports.js";
+import * as errors from "../helpers/errors.js";
 
 const constructorMethod = (app) => {
   app.use("/", homeRoutes);
   app.use("/reports", reportsRoutes);
   app.use("/public", express.static("public"));
   app.use("{*splat}", (req, res) => {
-    return res.status(404).json({error: "Not found"});
+    return errors.renderErrorPage(res, new errors.NotFoundError());
   });
 };
 

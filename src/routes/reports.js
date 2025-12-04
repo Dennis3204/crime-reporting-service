@@ -1,26 +1,24 @@
 import {Router} from "express";
-import {getReportList, getReport, ReportNotFoundError} from "../data/reports.js";
+import * as reports from "../data/reports.js";
+import * as helpers from "../helpers/errors.js";
 
 const router = new Router();
 
 router.get("/", async (req, res) => {
   try {
-    const reports = await getReportList();
-    return res.render("reports", {reports: reports});
+    const reportList = await reports.getReportList();
+    return res.render("reports", {reports: reportList});
   } catch (e) {
-    return res.status(500).json("Internal server error");
+    return helpers.renderErrorPage(res, e);
   }
 });
 
 router.get("/:id", async (req, res) => {
   try {
-    const report = await getReport(req.params.id);
+    const report = await reports.getReport(req.params.id);
     return res.render("report", report);
   } catch (e) {
-    if (e instanceof ReportNotFoundError)
-      return res.status(404).json("Report not found");
-    else
-      return res.status(500).json("Internal server error");
+    return helpers.renderErrorPage(res, e);
   }
 });
 

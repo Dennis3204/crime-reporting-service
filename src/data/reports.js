@@ -1,7 +1,7 @@
-import * as collections from "../config/mongoCollections.js";
 import {ObjectId} from "mongodb";
-
-export class ReportNotFoundError extends Error {}
+import * as collections from "../config/mongoCollections.js";
+import * as errors from "../helpers/errors.js";
+import * as validation from "../helpers/validation.js";
 
 export const getReportList = async () => {
   const reports = await collections.reports();
@@ -9,10 +9,10 @@ export const getReportList = async () => {
 }
 
 export const getReport = async (id) => {
-  // TODO: Validate object ID
+  validation.validateObjectId(id, "report ID");
   const reports = await collections.reports();
   const report = await reports.findOne({_id: new ObjectId(id)});
   if (report === null)
-    throw new ReportNotFoundError();
+    throw new errors.NotFoundError("Report not found.");
   return report;
 };
