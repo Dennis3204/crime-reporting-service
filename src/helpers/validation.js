@@ -9,11 +9,13 @@ const InvalidInputError = class extends BadRequestError {
 
 export const validateString = (str, name) => {
   if (typeof str !== "string" || str.length === 0)
-    throw new InvalidInputError(`Expected ${name} to be a non-empty string.`)
+    throw new InvalidInputError(`Expected ${name} to be a non-empty string.`);
+  return str;
 };
 
 export const validateObjectId = (id, name = "object ID") => {
-  validateString(id, name);
+  id = validateString(id, name);
   if (!ObjectId.isValid(id))
     throw new InvalidInputError(`${name} is invalid.`);
+  return new ObjectId(id);
 };

@@ -1,4 +1,3 @@
-import {ObjectId} from "mongodb";
 import * as collections from "../config/mongoCollections.js";
 import * as errors from "../helpers/errors.js";
 import * as validation from "../helpers/validation.js";
@@ -9,9 +8,9 @@ export const getReportList = async () => {
 }
 
 export const getReport = async (id) => {
-  validation.validateObjectId(id, "report ID");
+  id = validation.validateObjectId(id, "report ID");
   const reports = await collections.reports();
-  const report = await reports.findOne({_id: new ObjectId(id)});
+  const report = await reports.findOne({_id: id});
   if (report === null)
     throw new errors.NotFoundError("Report not found.");
   return report;
