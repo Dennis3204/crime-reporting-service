@@ -47,7 +47,7 @@ export const createUser = async (
 export const checkUser = async (username, password) => {
 
   username = validation.validateTrimmableString(username, "username").toLowerCase();
-  password = validation.validateTrimmableString(password, "password");
+  password = validation.validateString(password, "password");
 
   const userCollection = await users();
   const user = await userCollection.findOne({ username });

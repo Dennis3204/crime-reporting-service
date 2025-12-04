@@ -20,15 +20,22 @@ export const validateTrimmableString = (str, name) => {
   return str;
 };
 
+export const validateWord = (word, name) => {
+  word = validateTrimmableString(word, name);
+  if (word.match(/\s/))
+    throw new InvalidInputError(`${name} must not contain any whitespace.`);
+  return word;
+}
+
 export const validateUsername = (username) => {
-  username = validateTrimmableString(username, "username");
+  username = validateWord(username, "username");
   if (username.length < 3)
     throw new InvalidInputError("Username must be at least 3 characters long.");
   return username;
 };
 
 export const validatePassword = (password) => {
-  password = validateTrimmableString(password, "password");
+  password = validateString(password, "password");
   if (password.length < 8)
     throw new InvalidInputError("Password must be at least 8 characters long.");
   return password;
