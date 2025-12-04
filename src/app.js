@@ -1,5 +1,6 @@
 import express from "express";
 import exphbs from "express-handlebars";
+import session from "express-session";
 import configRoutesFunction from "./routes/index.js";
 import {closeConnection, dbConnection} from "./config/mongoConnection.js";
 
@@ -8,6 +9,10 @@ await dbConnection();
 console.log("Database connection established.");
 
 const app = express();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(session({ name: "sessionId", secret: "noonewilleverfigurethiskeyout@" ,saveUninitialized: false, resave: false, cookie: {maxAge: 3600000}}));
 
 app.engine("handlebars", exphbs.engine({defaultLayout: "main"}));
 app.set("view engine", "handlebars");

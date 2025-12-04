@@ -5,7 +5,7 @@
         <p class="error">{{error}}</p>
     {{/if}}
 
-    <form action="/auth/login" method="POST" id="login-form">
+    <form action="/login" method="POST" id="login-form">
         <label for="username">Username</label>
         <input type="text" name="username" id="username" required>
 
@@ -15,5 +15,5 @@
         <button type="submit">Login</button>
     </form>
 
-    <p>Don't have an account? <a href="/auth/signup">Sign up here</a></p>
+    <p>Don't have an account? <a href="/signup">Sign up here</a></p>
 </main>

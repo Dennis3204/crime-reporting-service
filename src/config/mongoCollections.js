@@ -12,3 +12,4 @@ const getCollectionFn = (collection) => {
 };
 
 export const reports = getCollectionFn("reports");
+export const users = getCollectionFn("users");
