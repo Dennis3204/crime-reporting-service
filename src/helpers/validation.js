@@ -1,15 +1,19 @@
-import {InvalidInputError} from "./errors.js";
+import {BadRequestError} from "./errors.js";
 import {ObjectId} from "mongodb";
 
-export const validateString = (str) => {
-  if (typeof str !== "string" || str.trim().length === 0)
-    throw new InvalidInputError()
-  return str.trim();
+const InvalidInputError = class extends BadRequestError {
+  constructor(message) {
+    super(`Invalid input: ${message.charAt(0).toUpperCase()}${message.slice(1)}`);
+  }
 };
 
-export const validateObjectId = (id) => {
-  id = validateString(id);
+export const validateString = (str, name) => {
+  if (typeof str !== "string" || str.length === 0)
+    throw new InvalidInputError(`Expected ${name} to be a non-empty string.`)
+};
+
+export const validateObjectId = (id, name = "object ID") => {
+  validateString(id, name);
   if (!ObjectId.isValid(id))
-    throw new InvalidInputError();
-  return id;
+    throw new InvalidInputError(`${name} is invalid.`);
 };

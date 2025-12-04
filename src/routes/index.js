@@ -8,7 +8,7 @@ const constructorMethod = (app) => {
   app.use("/reports", reportsRoutes);
   app.use("/public", express.static("public"));
   app.use("{*splat}", (req, res) => {
-    return errors.renderError(res, new errors.NotFoundError());
+    return errors.renderErrorPage(res, new errors.NotFoundError());
   });
 };
 

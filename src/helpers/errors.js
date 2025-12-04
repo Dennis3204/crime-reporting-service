@@ -1,29 +1,30 @@
 export const RenderableError = class extends Error {
-  constructor(message) { super(message); }
-  getMessage() { throw new Error("getMessage not implemented"); }
-  getCode() { throw new Error("getCode not implemented"); }
+  constructor(message) {
+    super(message);
+    this.code = 500;
+  }
 };
 
-export const InvalidInputError = class extends RenderableError {
-  getMessage() { return "Invalid input provided."; }
-  getCode() { return 400; }
+export const BadRequestError = class extends RenderableError {
+  constructor(message = "Bad request.") {
+    super(message);
+    this.code = 400;
+  }
 };
 
 export const NotFoundError = class extends RenderableError {
   constructor(message = "Not found.") {
-    super();
-    this.message = message;
+    super(message);
+    this.code = 404;
   }
-  getMessage() { return this.message; }
-  getCode() { return 404; }
 };
 
-export const renderError = (res, error) => {
+export const renderErrorPage = (res, error) => {
   let code = 500;
-  let message = "Internal server error.";
+  let message = `Internal server error:\n${error.message}`;
   if (error instanceof RenderableError) {
-    code = error.getCode();
-    message = error.getMessage();
+    code = error.code;
+    message = error.message;
   }
   return res.status(code).render("error", {message});
 };

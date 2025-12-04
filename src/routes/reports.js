@@ -9,7 +9,7 @@ router.get("/", async (req, res) => {
     const reportList = await reports.getReportList();
     return res.render("reports", {reports: reportList});
   } catch (e) {
-    return helpers.renderError(res, e);
+    return helpers.renderErrorPage(res, e);
   }
 });
 
@@ -18,7 +18,7 @@ router.get("/:id", async (req, res) => {
     const report = await reports.getReport(req.params.id);
     return res.render("report", report);
   } catch (e) {
-    return helpers.renderError(res, e);
+    return helpers.renderErrorPage(res, e);
   }
 });
 
