@@ -13,9 +13,37 @@ export const validateString = (str, name) => {
   return str;
 };
 
+export const validateTrimmableString = (str, name) => {
+  str = validateString(str, name).trim();
+  if (str.length === 0)
+    throw new InvalidInputError(`${name} must contain non-whitespace characters.`);
+  return str;
+};
+
+export const validateUsername = (username) => {
+  username = validateTrimmableString(username, "username");
+  if (username.length < 3)
+    throw new InvalidInputError("Username must be at least 3 characters long.");
+  return username;
+};
+
+export const validatePassword = (password) => {
+  password = validateTrimmableString(password, "password");
+  if (password.length < 8)
+    throw new InvalidInputError("Password must be at least 8 characters long.");
+  return password;
+};
+
 export const validateObjectId = (id, name = "object ID") => {
   id = validateString(id, name);
   if (!ObjectId.isValid(id))
     throw new InvalidInputError(`${name} is invalid.`);
   return new ObjectId(id);
+};
+
+export const validateNumber = (num, name) => {
+  num = Number(num);
+  if (isNaN(num))
+    throw new InvalidInputError(`Expected ${name} to be a number.`);
+  return num;
 };

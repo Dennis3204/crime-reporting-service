@@ -12,6 +12,13 @@ export const BadRequestError = class extends RenderableError {
   }
 };
 
+export const UnauthorizedError = class extends RenderableError {
+  constructor(message = "Unauthorized.") {
+    super(message);
+    this.code = 401;
+  }
+}
+
 export const NotFoundError = class extends RenderableError {
   constructor(message = "Not found.") {
     super(message);

@@ -1,6 +1,6 @@
 import { Router } from "express";
-import bcrypt from "bcrypt";
 import { createUser, checkUser } from "../data/users.js";
+import { RenderableError } from "../helpers/errors.js";
 
 const router = Router();
 
@@ -10,13 +10,13 @@ router.get("/signup", (req, res) => {
 
 router.post("/signup", async (req, res) => {
     let { username, first_name, last_name, age, password } = req.body;
-
     try {
         const newUser = await createUser(username, first_name, last_name, age, password);
         req.session.user = {_id: newUser._id,username: newUser.username};
         return res.redirect("/");
     } catch (e) {
-        return res.status(400).render("signup", {error: e.toString(),title: "Sign Up"});
+        const code = e instanceof RenderableError ? e.code : 500;
+        return res.status(code).render("signup", {error: e.message, title: "Sign Up"});
     }
 });
 
@@ -31,7 +31,8 @@ router.post("/login", async (req, res) => {
         req.session.user = {_id: user._id,username: user.username};
         return res.redirect("/");
     } catch (e) {
-        return res.status(400).render("login", {error: e.toString(),title: "Login"});
+        const code = e instanceof RenderableError ? e.code : 500;
+        return res.status(code).render("login", {error: e.message, title: "Login"});
     }
 });
 
