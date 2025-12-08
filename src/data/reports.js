@@ -8,10 +8,16 @@ export const getReportList = async () => {
 }
 
 export const getReport = async (id) => {
+
   id = validation.validateObjectId(id, "report ID");
   const reports = await collections.reports();
   const report = await reports.findOne({_id: id});
   if (report === null)
     throw new errors.NotFoundError("Report not found.");
+
+  const users =  await collections.users();
+  const author = await users.findOne({_id: report.author_id}, {username: 1});
+  report.author = author.username;
+
   return report;
 };
