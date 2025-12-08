@@ -21,7 +21,7 @@ export const getReport = async (id) => {
 
   report.comments = await comments.getCommentsForReport(id);
   for (const comment of report.comments) {
-    comment.user = await users.getUsername(comment.user_id);
+    comment.author = await users.getUsername(comment.author_id);
   }
 
   return report;

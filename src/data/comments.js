@@ -7,12 +7,12 @@ export const getCommentsForReport = async (reportId) => {
   return comments.find({report_id: reportId}).toArray();
 };
 
-export const addComment = async (reportId, userId, comment) => {
+export const addComment = async (reportId, authorId, comment) => {
   reportId = validation.validateObjectId(reportId, "report ID");
-  userId = validation.validateObjectId(userId, "user ID");
+  authorId = validation.validateObjectId(authorId, "author ID");
   comment = validation.validateTrimmableString(comment, "comment");
   const comments = await collections.comments();
-  const result = await comments.insertOne({report_id: reportId, user_id: userId, comment});
+  const result = await comments.insertOne({report_id: reportId, author_id: authorId, comment});
   if (!result.acknowledged)
     throw new errors.InternalServerError("Failed to add comment.");
   return result;
