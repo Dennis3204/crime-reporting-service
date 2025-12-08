@@ -25,6 +25,17 @@
         {{#each report.comments}}
             <dt>Posted by {{author}}:</dt>
             <dd>{{comment}}</dd>
+            <div>Score: {{score}}</div>
+            {{#if ../user}}
+                <div>
+                    <form action="/comments/{{_id}}/like" method="POST">
+                        <input type="submit" value="Like">
+                    </form>
+                    <form action="/comments/{{_id}}/dislike" method="POST">
+                        <input type="submit" value="Dislike">
+                    </form>
+                </div>
+            {{/if}}
         {{else}}
             <p>No comments yet.</p>
         {{/each}}
