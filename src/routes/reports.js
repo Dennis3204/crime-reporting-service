@@ -22,4 +22,15 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.post("/:id/comment", async (req, res) => {
+  try {
+    if (req.session.user === undefined)
+      throw new helpers.UnauthorizedError();
+    await reports.addComment(req.params.id, req.session.user._id, req.body.comment);
+    return res.redirect(`/reports/${req.params.id}`);
+  } catch (e) {
+    return helpers.renderErrorPage(res, e);
+  }
+});
+
 export default router;

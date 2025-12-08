@@ -1,7 +1,7 @@
 export const RenderableError = class extends Error {
   constructor(message) {
     super(message);
-    this.code = 500;
+    this.code = null;
   }
 };
 
@@ -23,6 +23,13 @@ export const NotFoundError = class extends RenderableError {
   constructor(message = "Not found.") {
     super(message);
     this.code = 404;
+  }
+};
+
+export const InternalServerError = class extends RenderableError {
+  constructor(message = "Internal server error.") {
+    super(message);
+    this.code = 500;
   }
 };
 

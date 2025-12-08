@@ -12,10 +12,17 @@
     <h2>Description</h2>
     <p>{{desc}}</p>
     <h2>Comments</h2>
-    {{#each comments}}
-        <p>{{comment}}</p>
-        <div>Posted by user with ID {{user_id}}</div>
-    {{else}}
-        <p>No comments yet.</p>
-    {{/each}}
+    <form action="{{_id}}/comment" method="POST">
+        <label for="comment">Leave a comment:</label>
+        <textarea id="comment" name="comment"></textarea>
+        <input type="submit" value="Submit">
+    </form>
+    <dl>
+        {{#each comments}}
+            <dt>Posted by {{user}}:</dt>
+            <dd>{{comment}}</dd>
+        {{else}}
+            <p>No comments yet.</p>
+        {{/each}}
+    </dl>
 </main>
