@@ -1,4 +1,5 @@
 import {Router} from "express";
+import * as comments from "../data/comments.js";
 import * as reports from "../data/reports.js";
 import * as helpers from "../helpers/errors.js";
 
@@ -26,7 +27,7 @@ router.post("/:id/comment", async (req, res) => {
   try {
     if (req.session.user === undefined)
       throw new helpers.UnauthorizedError();
-    await reports.addComment(req.params.id, req.session.user._id, req.body.comment);
+    await comments.addComment(req.params.id, req.session.user._id, req.body.comment);
     return res.redirect(`/reports/${req.params.id}`);
   } catch (e) {
     return helpers.renderErrorPage(res, e);
