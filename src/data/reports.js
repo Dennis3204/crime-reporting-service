@@ -40,3 +40,14 @@ export const addComment = async (id, userId, comment) => {
     throw new errors.InternalServerError("Failed to add comment.")
   return result;
 };
+
+export const searchByKeyword = async (keyword) =>{
+    keyword = validation.validateTrimmableString(keyword,"keyword");
+    const report = await collections.reports();
+    const result = await report.find({title: report}).toArray()
+    if(result.length === 0)
+      throw "404"
+    if(!result.acknowledged)
+      throw new errors.InternalServerError("Failed to search");
+    return result
+}
