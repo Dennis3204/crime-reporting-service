@@ -6,6 +6,12 @@
         <link rel="stylesheet" href="/public/css/styles.css">
     </head>
     <body>
+      {{#if user}}
+            <div class="top-nav">
+                <a href="/profile" class="profile-link">Profile</a>
+            </div>
+        {{/if}}
+
         {{{body}}}
     </body>
 </html>

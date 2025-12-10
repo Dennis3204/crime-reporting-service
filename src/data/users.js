@@ -8,13 +8,21 @@ export const createUser = async (
   first_name,
   last_name,
   age,
-  password) => {
+  password,
+  street,
+  city,
+  state,
+  zipcode) => {
 
   username = validation.validateUsername(username).toLowerCase();
   password = validation.validatePassword(password);
   first_name = validation.validateTrimmableString(first_name, "first name");
   last_name = validation.validateTrimmableString(last_name, "last name");
   age = validation.validateNumber(age, "age");
+  street = validation.validateTrimmableString(street, "street");
+  city = validation.validateTrimmableString(city, "city");
+  state = validation.validateTrimmableString(state, "state");
+  zipcode = validation.validateZipcode(zipcode);
 
   const userCollection = await users();
   const usernameExists = await userCollection.findOne({ username });
@@ -30,6 +38,12 @@ export const createUser = async (
     last_name,
     age,
     password: hashedPassword,
+    address: {
+      street,
+      city,
+      state,
+      zipcode
+    },
     reports: [],
     post: [],
     comments_reports: [],

@@ -1,0 +1,40 @@
+<main>
+    <h1>Your Profile</h1>
+
+    <section class="profile-summary">
+        <h2>{{user.first_name}} {{user.last_name}}</h2>
+        <p><strong>Username:</strong> {{user.username}}</p>
+        <p><strong>Total Reports Submitted:</strong> {{totalReports}}</p>
+    </section>
+
+    {{#if error}}
+        <p class="error">{{error}}</p>
+    {{/if}}
+
+    {{#if success}}
+        <p class="success">{{success}}</p>
+    {{/if}}
+
+    <form action="/profile" method="POST">
+
+        <h3>Address Information</h3>
+
+        <label for="street">Street</label>
+        <input type="text" id="street" name="street" value="{{user.address.street}}" required>
+
+        <label for="city">City</label>
+        <input type="text" id="city" name="city" value="{{user.address.city}}" required>
+
+        <label for="state">State</label>
+        <input type="text" id="state" name="state" value="{{user.address.state}}" required>
+
+        <label for="zipcode">ZIP Code</label>
+        <input type="text" id="zipcode" name="zipcode" value="{{user.address.zipcode}}" required pattern="\d{5}">
+
+        <button type="submit">Save & Update</button>
+    </form>
+
+    <form action="/logout" method="GET" class="logout-form">
+  <button type="submit">Logout</button>
+    </form>
+</main>
