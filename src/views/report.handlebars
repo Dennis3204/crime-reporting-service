@@ -24,10 +24,10 @@
         <form action="{{_id}}" method="GET">
             <label for="sort">Sort by:</label>
             <select id="sort" name="sort">
-                <option value="best">Highest score first</option>
-                <option value="worst">Lowest score first</option>
-                <option value="newest">Newest first</option>
-                <option value="oldest">Oldest first</option>
+                <option value="best" {{#ifEq ../sort "best"}}selected{{/ifEq}}>Highest score first</option>
+                <option value="worst" {{#ifEq ../sort "worst"}}selected{{/ifEq}}>Lowest score first</option>
+                <option value="newest" {{#ifEq ../sort "newest"}}selected{{/ifEq}}>Newest first</option>
+                <option value="oldest" {{#ifEq ../sort "oldest"}}selected{{/ifEq}}>Oldest first</option>
             </select>
             <input type="submit" value="Sort">
         </form>
