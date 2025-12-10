@@ -51,3 +51,14 @@ export const searchByKeyword = async (keyword) =>{
       throw new errors.InternalServerError("Failed to search");
     return result
 }
+
+export const searchByZipCode = async(zip) =>{
+  zip = validation.validateTrimmableString(zip,"Zipcode")
+  const report = await collections.reports()
+  const result =  await report.find({zipcode: zip}).toArray()
+  if(result.length === 0)
+    throw "404"
+  if(!result.acknowledged)
+    throw new errors.InternalServerError("Failed to search");
+  return result
+}
