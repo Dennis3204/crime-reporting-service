@@ -1,7 +1,16 @@
 import bcrypt from "bcrypt";
 import { users } from "../config/mongoCollections.js";
 import * as validation from "../helpers/validation.js";
-import {BadRequestError, UnauthorizedError} from "../helpers/errors.js";
+import * as errors from "../helpers/errors.js";
+
+export const getUsername = async (id) => {
+  id = validation.validateObjectId(id, "user ID");
+  const userCollection = await users();
+  const result = await userCollection.findOne({_id: id}, {username: 1});
+  if (result === null)
+    throw new errors.NotFoundError("User not found.");
+  return result.username;
+};
 
 export const createUser = async (
   username,
@@ -28,7 +37,7 @@ export const createUser = async (
   const usernameExists = await userCollection.findOne({ username });
 
   if (usernameExists) {
-    throw new BadRequestError("Username already exists.");
+    throw new errors.BadRequestError("Username already exists.");
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -66,11 +75,11 @@ export const checkUser = async (username, password) => {
   const userCollection = await users();
   const user = await userCollection.findOne({ username });
   if (!user) {
-    throw new UnauthorizedError("Either the username or password is invalid.");
+    throw new errors.UnauthorizedError("Either the username or password is invalid.");
   }
   const passwordMatch = await bcrypt.compare(password, user.password);
   if (!passwordMatch) {
-    throw new UnauthorizedError("Either the username or password is invalid.");
+    throw new errors.UnauthorizedError("Either the username or password is invalid.");
   }
 
   return user;

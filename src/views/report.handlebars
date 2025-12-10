@@ -12,21 +12,43 @@
         </dl>
         <h2>Description</h2>
         <p>{{desc}}</p>
-    {{/with}}
-    <h2>Comments</h2>
-    {{#if user}}
-        <form action="{{_id}}/comment" method="POST">
-            <label for="comment">Leave a comment:</label>
-            <textarea id="comment" name="comment"></textarea>
-            <input type="submit" value="Submit">
+        <h2>Comments</h2>
+        {{#if ../user}}
+            <form action="{{_id}}/comment" method="POST">
+                <label for="comment">Leave a comment:</label>
+                <textarea id="comment" name="comment"></textarea>
+                <input type="submit" value="Submit">
+            </form>
+            <br> <!-- TODO: Remove <br> after implementing CSS styling -->
+        {{/if}}
+        <form action="{{_id}}" method="GET">
+            <label for="sort">Sort by:</label>
+            <select id="sort" name="sort">
+                <option value="best" {{#ifEq ../sort "best"}}selected{{/ifEq}}>Highest score first</option>
+                <option value="worst" {{#ifEq ../sort "worst"}}selected{{/ifEq}}>Lowest score first</option>
+                <option value="newest" {{#ifEq ../sort "newest"}}selected{{/ifEq}}>Newest first</option>
+                <option value="oldest" {{#ifEq ../sort "oldest"}}selected{{/ifEq}}>Oldest first</option>
+            </select>
+            <input type="submit" value="Sort">
         </form>
-    {{/if}}
-    <dl>
-        {{#each report.comments}}
-            <dt>Posted by {{user}}:</dt>
-            <dd>{{comment}}</dd>
-        {{else}}
-            <p>No comments yet.</p>
-        {{/each}}
-    </dl>
+        <dl>
+            {{#each comments}}
+                <dt>Posted by {{author}} ({{time}}):</dt>
+                <dd>{{comment}}</dd>
+                <div>Score: {{score}}</div>
+                {{#if ../../user}}
+                    <div>
+                        <form action="/comments/{{_id}}/like" method="POST">
+                            <input type="submit" value="Like">
+                        </form>
+                        <form action="/comments/{{_id}}/dislike" method="POST">
+                            <input type="submit" value="Dislike">
+                        </form>
+                    </div>
+                {{/if}}
+            {{else}}
+                <p>No comments yet.</p>
+            {{/each}}
+        </dl>
+    {{/with}}
 </main>

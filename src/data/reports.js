@@ -1,3 +1,5 @@
+import * as comments from "./comments.js";
+import * as users from "./users.js";
 import * as collections from "../config/mongoCollections.js";
 import * as errors from "../helpers/errors.js";
 import * as validation from "../helpers/validation.js";
@@ -7,38 +9,39 @@ export const getReportList = async () => {
   return reports.find({}, {_id: 1, title: 1}).toArray();
 }
 
-export const getReport = async (id) => {
+export const getReport = async (id, commentSort = "best") => {
 
   id = validation.validateObjectId(id, "report ID");
+  commentSort = validation.validateString(commentSort, "sort order");
+
   const reports = await collections.reports();
   const report = await reports.findOne({_id: id});
   if (report === null)
     throw new errors.NotFoundError("Report not found.");
 
-  const users =  await collections.users();
-  const author = await users.findOne({_id: report.author_id}, {username: 1});
-  report.author = author.username;
+  report.author = await users.getUsername(report.author_id);
+
+  report.comments = await comments.getCommentsForReport(id);
   for (const comment of report.comments) {
-    const user = await users.findOne({_id: comment.user_id}, {username: 1});
-    comment.user = user.username;
+    comment.author = await users.getUsername(comment.author_id);
+    comment.time = new Date(comment.timestamp).toLocaleString();
+    comment.score = comment.liked_by.length - comment.disliked_by.length;
   }
 
-  return report;
-};
+  let sortFunc;
+  if (commentSort === "best")
+    sortFunc = (a, b) => (b.score - a.score);
+  else if (commentSort === "worst")
+    sortFunc = (a, b) => (a.score - b.score);
+  else if (commentSort === "newest")
+    sortFunc = (a, b) => (b.timestamp - a.timestamp);
+  else if (commentSort === "oldest")
+    sortFunc = (a, b) => (a.timestamp - b.timestamp);
+  else
+    throw new errors.BadRequestError("Invalid comment sort order.");
+  report.comments.sort(sortFunc);
 
-export const addComment = async (id, userId, comment) => {
-  id = validation.validateObjectId(id, "report ID");
-  userId = validation.validateObjectId(userId, "user ID");
-  comment = validation.validateTrimmableString(comment, "comment");
-  const reports = await collections.reports();
-  const result = await reports.updateOne({_id: id}, {$push: {comments: {user_id: userId, comment}}});
-  if (!result.acknowledged)
-    throw new errors.InternalServerError("Failed to add comment.");
-  else if (result.matchedCount < 1)
-    throw new errors.NotFoundError("Report not found.")
-  else if (result.modifiedCount < 1)
-    throw new errors.InternalServerError("Failed to add comment.")
-  return result;
+  return report;
 };
 
 export const searchByKeyword = async (keyword) =>{
