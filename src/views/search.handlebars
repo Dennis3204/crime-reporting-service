@@ -1,0 +1,22 @@
+<h1 id="search_title">Search Report</h1>
+<form id="search_form" method="post">
+    <label for="keyword" id="keyword_label">Enter your Keyword
+        <input type="text" name="keyword" id="keyword">
+        <button type="submit" id="submit_button">Submit</button>
+    </label>
+</form>
+<br>
+<div id="result_block">
+    <ol>
+        {{#each report}}
+        <li>
+            <a href="/reports/{{this.id}}" id="report_link">{{this.title}}</a>
+            <br>
+            <p>{{this.desc}}</p>
+        </li>
+        {{/each}}
+    </ol>
+</div>
+<div id="error_block">
+    <p id="error_text">{{error}}</p>
+</div>
