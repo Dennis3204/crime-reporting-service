@@ -15,6 +15,7 @@ export const getComment = async (id) => {
 }
 
 export const getCommentsForReport = async (reportId) => {
+  reportId = validation.validateObjectId(reportId, "report ID");
   const comments = await collections.comments();
   return comments.find({report_id: reportId}).toArray();
 };

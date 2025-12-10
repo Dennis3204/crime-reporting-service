@@ -4,6 +4,7 @@ import * as validation from "../helpers/validation.js";
 import * as errors from "../helpers/errors.js";
 
 export const getUsername = async (id) => {
+  id = validation.validateObjectId(id, "user ID");
   const userCollection = await users();
   const result = await userCollection.findOne({_id: id}, {username: 1});
   if (result === null)
