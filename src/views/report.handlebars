@@ -12,43 +12,43 @@
         </dl>
         <h2>Description</h2>
         <p>{{desc}}</p>
-    {{/with}}
-    <h2>Comments</h2>
-    {{#if user}}
-        <form action="{{report._id}}/comment" method="POST">
-            <label for="comment">Leave a comment:</label>
-            <textarea id="comment" name="comment"></textarea>
-            <input type="submit" value="Submit">
+        <h2>Comments</h2>
+        {{#if ../user}}
+            <form action="{{_id}}/comment" method="POST">
+                <label for="comment">Leave a comment:</label>
+                <textarea id="comment" name="comment"></textarea>
+                <input type="submit" value="Submit">
+            </form>
+            <br> <!-- TODO: Remove <br> after implementing CSS styling -->
+        {{/if}}
+        <form action="{{_id}}" method="GET">
+            <label for="sort">Sort by:</label>
+            <select id="sort" name="sort">
+                <option value="best">Highest score first</option>
+                <option value="worst">Lowest score first</option>
+                <option value="newest">Newest first</option>
+                <option value="oldest">Oldest first</option>
+            </select>
+            <input type="submit" value="Sort">
         </form>
-        <br> <!-- TODO: Remove <br> after implementing CSS styling -->
-    {{/if}}
-    <form action="{{report._id}}" method="GET">
-        <label for="sort">Sort by:</label>
-        <select id="sort" name="sort">
-            <option value="best">Highest score first</option>
-            <option value="worst">Lowest score first</option>
-            <option value="newest">Newest first</option>
-            <option value="oldest">Oldest first</option>
-        </select>
-        <input type="submit" value="Sort">
-    </form>
-    <dl>
-        {{#each report.comments}}
-            <dt>Posted by {{author}}:</dt>
-            <dd>{{comment}}</dd>
-            <div>Score: {{score}}</div>
-            {{#if ../user}}
-                <div>
-                    <form action="/comments/{{_id}}/like" method="POST">
-                        <input type="submit" value="Like">
-                    </form>
-                    <form action="/comments/{{_id}}/dislike" method="POST">
-                        <input type="submit" value="Dislike">
-                    </form>
-                </div>
-            {{/if}}
-        {{else}}
-            <p>No comments yet.</p>
-        {{/each}}
-    </dl>
+        <dl>
+            {{#each comments}}
+                <dt>Posted by {{author}}:</dt>
+                <dd>{{comment}}</dd>
+                <div>Score: {{score}}</div>
+                {{#if ../../user}}
+                    <div>
+                        <form action="/comments/{{_id}}/like" method="POST">
+                            <input type="submit" value="Like">
+                        </form>
+                        <form action="/comments/{{_id}}/dislike" method="POST">
+                            <input type="submit" value="Dislike">
+                        </form>
+                    </div>
+                {{/if}}
+            {{else}}
+                <p>No comments yet.</p>
+            {{/each}}
+        </dl>
+    {{/with}}
 </main>
