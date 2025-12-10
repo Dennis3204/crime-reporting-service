@@ -20,7 +20,18 @@
             <textarea id="comment" name="comment"></textarea>
             <input type="submit" value="Submit">
         </form>
+        <br> <!-- TODO: Remove <br> after implementing CSS styling -->
     {{/if}}
+    <form action="{{report._id}}" method="GET">
+        <label for="sort">Sort by:</label>
+        <select id="sort" name="sort">
+            <option value="best">Highest score first</option>
+            <option value="worst">Lowest score first</option>
+            <option value="newest">Newest first</option>
+            <option value="oldest">Oldest first</option>
+        </select>
+        <input type="submit" value="Sort">
+    </form>
     <dl>
         {{#each report.comments}}
             <dt>Posted by {{author}}:</dt>

@@ -29,6 +29,7 @@ export const addComment = async (reportId, authorId, comment) => {
     report_id: reportId,
     author_id: authorId,
     comment,
+    timestamp: Date.now(),
     liked_by: [],
     disliked_by: []
   });

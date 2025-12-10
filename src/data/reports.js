@@ -9,9 +9,11 @@ export const getReportList = async () => {
   return reports.find({}, {_id: 1, title: 1}).toArray();
 }
 
-export const getReport = async (id) => {
+export const getReport = async (id, commentSort = "best") => {
 
   id = validation.validateObjectId(id, "report ID");
+  commentSort = validation.validateString(commentSort, "sort order");
+
   const reports = await collections.reports();
   const report = await reports.findOne({_id: id});
   if (report === null)
@@ -24,6 +26,19 @@ export const getReport = async (id) => {
     comment.author = await users.getUsername(comment.author_id);
     comment.score = comment.liked_by.length - comment.disliked_by.length;
   }
+
+  let sortFunc;
+  if (commentSort === "best")
+    sortFunc = (a, b) => (b.score - a.score);
+  else if (commentSort === "worst")
+    sortFunc = (a, b) => (a.score - b.score);
+  else if (commentSort === "newest")
+    sortFunc = (a, b) => (b.timestamp - a.timestamp);
+  else if (commentSort === "oldest")
+    sortFunc = (a, b) => (a.timestamp - b.timestamp);
+  else
+    throw new errors.BadRequestError("Invalid comment sort order.");
+  report.comments.sort(sortFunc);
 
   return report;
 };

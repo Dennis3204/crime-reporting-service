@@ -16,7 +16,7 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   try {
-    const report = await reports.getReport(req.params.id);
+    const report = await reports.getReport(req.params.id, req.query.sort);
     return res.render("report", {report, user: req.session.user});
   } catch (e) {
     return helpers.renderErrorPage(res, e);
