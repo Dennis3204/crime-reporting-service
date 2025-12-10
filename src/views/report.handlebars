@@ -15,7 +15,7 @@
     {{/with}}
     <h2>Comments</h2>
     {{#if user}}
-        <form action="{{_id}}/comment" method="POST">
+        <form action="{{report._id}}/comment" method="POST">
             <label for="comment">Leave a comment:</label>
             <textarea id="comment" name="comment"></textarea>
             <input type="submit" value="Submit">
