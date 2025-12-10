@@ -42,7 +42,6 @@ export const validatePassword = (password) => {
 };
 
 export const validateObjectId = (id, name = "object ID") => {
-  id = validateString(id, name);
   if (!ObjectId.isValid(id))
     throw new InvalidInputError(`${name} is invalid.`);
   return new ObjectId(id);
