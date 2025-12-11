@@ -51,7 +51,6 @@ export const validatePassword = (password) => {
 };
 
 export const validateObjectId = (id, name = "object ID") => {
-  id = validateString(id, name);
   if (!ObjectId.isValid(id))
     throw new InvalidInputError(`${name} is invalid.`);
   return new ObjectId(id);
@@ -63,3 +62,12 @@ export const validateNumber = (num, name) => {
     throw new InvalidInputError(`Expected ${name} to be a number.`);
   return num;
 };
+
+export const validateZipcode = (zipcode) => {
+  zipcode = validateTrimmableString(zipcode, "zipcode");
+  if (!/^\d{5}$/.test(zipcode)) {
+    throw new Error("ZIP code must be 5 digits.");
+  }
+  return zipcode;
+};
+
