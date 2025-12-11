@@ -3,6 +3,7 @@ import exphbs from "express-handlebars";
 import session from "express-session";
 import configRoutesFunction from "./routes/index.js";
 import {closeConnection, dbConnection} from "./config/mongoConnection.js";
+import registerHelpers from "./helpers/handlebars.js";
 
 console.log("Establishing database connection...");
 await dbConnection();
@@ -14,9 +15,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(session({ name: "sessionId", secret: "noonewilleverfigurethiskeyout@" ,saveUninitialized: false, resave: false, cookie: {maxAge: 3600000}}));
 
-app.engine("handlebars", exphbs.engine({defaultLayout: "main"}));
+const hbs = exphbs.create({defaultLayout: "main"});
+app.engine("handlebars", hbs.engine);
 app.set("view engine", "handlebars");
 app.set("views", "src/views");
+registerHelpers(hbs);
 
 configRoutesFunction(app);
 
