@@ -9,7 +9,7 @@ if (form) {
     const lastName = document.getElementById("last_name").value.trim();
     const age = Number(document.getElementById("age").value);
     const password = document.getElementById("password").value;
-    const street = document.getElementById("street").value.trim();
+    const area = document.getElementById("area").value.trim();
     const city = document.getElementById("city").value.trim();
     const state = document.getElementById("state").value.trim();
     const zipcode = document.getElementById("zipcode").value.trim();
@@ -40,12 +40,13 @@ if (form) {
       return;
     }
 
-    if (street.length === 0 || city.length === 0 ||state.length === 0) {
+    if (!area) {
       e.preventDefault();
+      errorDiv.textContent = "Neighborhood / area is required.";
 
-      errorDiv.textContent = "Complete address is required.";
       return;
     }
+
     if (!/^[a-zA-Z\s]+$/.test(city)) {
       e.preventDefault();
       errorDiv.textContent = "City must contain only letters.";
@@ -58,9 +59,9 @@ if (form) {
       return;
     }
 
-    if (!/^[a-zA-Z0-9\s]+$/.test(street)) {
+    if (!/^[a-zA-Z0-9\s]+$/.test(area)) {
       e.preventDefault();
-      errorDiv.textContent = "Street may only contain letters and numbers.";
+      errorDiv.textContent = "Neighborhood / area may only contain letters and numbers.";
       return;
     }
 

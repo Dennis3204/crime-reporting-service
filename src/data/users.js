@@ -18,7 +18,7 @@ export const createUser = async (
   last_name,
   age,
   password,
-  street,
+  area,
   city,
   state,
   zipcode) => {
@@ -28,7 +28,7 @@ export const createUser = async (
   first_name = validation.validateTrimmableString(first_name, "first name");
   last_name = validation.validateTrimmableString(last_name, "last name");
   age = validation.validateNumber(age, "age");
-  street = validation.validateTrimmableString(street, "street");
+  area = validation.validateTrimmableString(area, "area");
   city = validation.validateTrimmableString(city, "city");
   state = validation.validateTrimmableString(state, "state");
   zipcode = validation.validateZipcode(zipcode);
@@ -47,8 +47,8 @@ export const createUser = async (
     last_name,
     age,
     password: hashedPassword,
-    address: {
-      street,
+    location: {
+      area,
       city,
       state,
       zipcode

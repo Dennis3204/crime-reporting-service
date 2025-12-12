@@ -24,9 +24,9 @@ router.post("/", async (req, res) => {
     if (!req.session.user) {
         return res.redirect("/login");
     }
-    let { street, city, state, zipcode } = req.body;
+    let { area, city, state, zipcode } = req.body;
     try {
-        street = validation.validateTrimmableString(street, "street");
+        area = validation.validateTrimmableString(area, "area");
         city = validation.validateTrimmableString(city, "city");
         state = validation.validateTrimmableString(state, "state");
         zipcode = validation.validateZipcode(zipcode);
@@ -41,20 +41,23 @@ router.post("/", async (req, res) => {
     const userCollection = await users();
 
     await userCollection.updateOne(
-        { _id: req.session.user._id },
+        { _id: new ObjectId(req.session.user._id) },
         {
             $set: {
-                "address.street": street,
-                "address.city": city,
-                "address.state": state,
-                "address.zipcode": zipcode
+                "location.area": area,
+                "location.city": city,
+                "location.state": state,
+                "location.zipcode": zipcode
             }
         }
     );
+    const updatedUser = await userCollection.findOne({
+      _id: new ObjectId(req.session.user._id)
+    });
 
-    req.session.user.address = { street, city, state, zipcode };
+    req.session.user.location = updatedUser.location;
 
-    return res.render("profile", {title: "Your Profile", user: req.session.user, success: "Profile updated successfully!!"});
+    return res.render("profile", {title: "Your Profile", user: updatedUser, totalReports: updatedUser.reports.length, success: "Profile updated successfully!!"});
 });
 
 export default router;
