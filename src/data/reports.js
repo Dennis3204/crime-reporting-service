@@ -107,12 +107,22 @@ export const getReport = async (id, commentSort = "best") => {
 
 export const searchByKeyword = async (keyword) =>{
     keyword = validation.validateTrimmableString(keyword,"keyword");
+    let key_regex = new RegExp('.*' + keyword + '.*', 'i')
     const report = await collections.reports();
-    const result = await report.find({title: report}).toArray()
+    const result = await report.find({title: {$regex: key_regex}}).toArray()
+    console.log(result)
     if(result.length === 0)
       throw "404"
-    if(!result.acknowledged)
-      throw new errors.InternalServerError("Failed to search");
+    return result
+}
+export const searchByCrime = async (keyword) =>{
+    keyword = validation.validateTrimmableString(keyword,"keyword");
+    let key_regex = new RegExp('.*' + keyword + '.*', 'i')
+    const report = await collections.reports();
+    const result = await report.find({crime: {$regex: key_regex}}).toArray()
+    console.log(result)
+    if(result.length === 0)
+      throw "404"
     return result
 }
 
@@ -122,7 +132,5 @@ export const searchByZipCode = async(zip) =>{
   const result =  await report.find({zipcode: zip}).toArray()
   if(result.length === 0)
     throw "404"
-  if(!result.acknowledged)
-    throw new errors.InternalServerError("Failed to search");
   return result
 }

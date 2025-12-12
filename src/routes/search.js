@@ -12,8 +12,16 @@ router
     .post(async (req, res) =>{
         let search_body = req.body 
         let keyword = search_body.keyword
+        let target = search_body.target
         try{
-            let result = await reports.searchByKeyword(keyword)
+            let result =[]
+            if(target === 'title'){
+                result = await reports.searchByKeyword(keyword)
+            }else if(target === "crime"){
+                result = await reports.searchByCrime(keyword)
+            }else if(target ==='zipcode'){
+                result = await reports.searchByZipCode(keyword)
+            }
             return res.render('search',{title:"Search",report:result})
         }catch(e){
             if(e === "404"){
