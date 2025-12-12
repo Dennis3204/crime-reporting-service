@@ -6,8 +6,6 @@ import * as validation from "../helpers/validation.js";
 import { ObjectId } from "mongodb";
 
 
-
-
 export const createReport = async (
   authorId,
   {
