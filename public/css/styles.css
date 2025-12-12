@@ -42,7 +42,7 @@ text{
   fill:aqua
 }
 #onHover{
-  display: none;
+  visibility: hidden;
   padding: 10px;
   border: 1px;
   flex: 1

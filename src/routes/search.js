@@ -31,5 +31,20 @@ router
             }
         }
     })
+router
+    .route('/search/:zip')
+    .get(async(req,res)=>{
+        const zip = req.params.zip
+        try{
+            result = await reports.searchByZipCode(zip)
+            return res.render('search',{title:"Search",report:result})
+        }catch(e){
+            if(e === "404"){
+                return res.status(404).render("search",{title:"Search", error:"Not found"})
+            }else{
+                return helpers.renderErrorPage(res, e);
+            }
+        }
+    })
 
 export default router;
