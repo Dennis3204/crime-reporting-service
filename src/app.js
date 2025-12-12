@@ -14,6 +14,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(session({ name: "sessionId", secret: "noonewilleverfigurethiskeyout@" ,saveUninitialized: false, resave: false, cookie: {maxAge: 3600000}}));
+app.use(express.static("public"));
 
 const hbs = exphbs.create({defaultLayout: "main"});
 app.engine("handlebars", hbs.engine);

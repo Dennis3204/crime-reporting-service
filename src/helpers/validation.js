@@ -7,6 +7,15 @@ const InvalidInputError = class extends BadRequestError {
   }
 };
 
+export const validateZip = (zip, name = "ZIP code") => {
+  zip = validateTrimmableString(zip, name);
+
+  if (!/^\d{5}$/.test(zip)) {
+    throw new InvalidInputError(`${name} must be a 5-digit number.`);
+  }
+  return zip;
+};
+
 export const validateString = (str, name) => {
   if (typeof str !== "string" || str.length === 0)
     throw new InvalidInputError(`Expected ${name} to be a non-empty string.`);

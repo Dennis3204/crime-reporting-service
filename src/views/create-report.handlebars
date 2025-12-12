@@ -1,0 +1,75 @@
+<main>
+  <h1>Create a Crime Report</h1>
+
+  {{#if error}}
+    <p class="error">{{error}}</p>
+  {{/if}}
+
+  <form
+    action="/reports"
+    method="POST"
+    enctype="multipart/form-data"
+    id="report-form"
+  >
+    <div>
+      <label for="title">Title*</label>
+      <input type="text" id="title" name="title" required>
+    </div>
+
+    <div>
+      <label for="desc">Description*</label>
+      <textarea id="desc" name="desc" required></textarea>
+    </div>
+
+    <div>
+      <label for="crime">Crime Type*</label>
+      <input type="text" id="crime" name="crime" required>
+      {{!-- Later you can make this a <select> with fixed types --}}
+    </div>
+
+    <fieldset>
+      <legend>Location*</legend>
+
+      <div>
+        <label for="state">State</label>
+        <input type="text" id="state" name="state" required>
+      </div>
+
+      <div>
+        <label for="city">City</label>
+        <input type="text" id="city" name="city" required>
+      </div>
+
+      <div>
+        <label for="area">Neighborhood / Area</label>
+        <input type="text" id="area" name="area" required>
+      </div>
+
+      <div>
+        <label for="zipcode">ZIP Code</label>
+        <input
+          type="text"
+          id="zipcode"
+          name="zipcode"
+          required
+          pattern="\d{5}"
+          title="5-digit ZIP code"
+        >
+      </div>
+    </fieldset>
+
+    <div>
+      <label for="photos">Photos (optional)</label>
+      <input type="file" id="photos" name="photos" accept="image/*" multiple>
+    </div>
+
+    <div>
+      <label>
+        <input type="checkbox" name="anonymous">
+        Post as anonymous
+      </label>
+    </div>
+
+    <button type="submit">Submit Report</button>
+  </form>
+</main>

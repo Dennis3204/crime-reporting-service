@@ -2,6 +2,7 @@ import {Router} from "express";
 import * as comments from "../data/comments.js";
 import * as reports from "../data/reports.js";
 import * as helpers from "../helpers/errors.js";
+import upload from "../config/multer.js";
 
 const router = new Router();
 
@@ -14,6 +15,19 @@ router.get("/", async (req, res) => {
   }
 });
 
+
+router.get("/new", (req, res) => {
+  try {
+    if (req.session.user === undefined)
+      throw new helpers.UnauthorizedError();
+
+    return res.render("create-report", { title: "Create Report" });
+  } catch (e) {
+    return helpers.renderErrorPage(res, e);
+  }
+});
+
+
 router.get("/:id", async (req, res) => {
   try {
     const report = await reports.getReport(req.params.id, req.query.sort);
@@ -22,6 +36,55 @@ router.get("/:id", async (req, res) => {
     return helpers.renderErrorPage(res, e);
   }
 });
+
+
+router.post(
+  "/",
+  upload.array("photos", 5), // "photos" must match
+  async (req, res) => {
+    try {
+      if (req.session.user === undefined)
+        throw new helpers.UnauthorizedError();
+
+      const userId = req.session.user._id;
+
+      const {
+        title,
+        desc,
+        crime,
+        state,
+        city,
+        area,
+        zipcode,
+        anonymous
+      } = req.body;
+
+      // Map uploaded files to public URLs
+      const imgPaths =
+        Array.isArray(req.files) && req.files.length > 0
+          ? req.files.map((f) => `/public/uploads/reports/${f.filename}`)
+          : [];
+
+      const report = await reports.createReport(userId, {
+        title,
+        desc,
+        crime,
+        state,
+        city,
+        area,
+        zipcode,
+        imgPaths,
+        isAnonymous: anonymous === "on"
+      });
+
+      return res.redirect(`/reports/${report._id.toString()}`);
+    } catch (e) {
+
+      return helpers.renderErrorPage(res, e);
+    }
+  }
+);
+
 
 router.post("/:id/comment", async (req, res) => {
   try {
