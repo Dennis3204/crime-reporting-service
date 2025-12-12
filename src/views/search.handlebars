@@ -1,16 +1,22 @@
 <h1 id="search_title">Search Report</h1>
-<form id="search_form" method="post">
-    <label for="keyword" id="keyword_label">Enter your Keyword
-        <input type="text" name="keyword" id="keyword">
-        <button type="submit" id="submit_button">Submit</button>
-    </label>
+<form id="search_form" method="POST">
+    <label for="target">Search for:</label>
+    <select id="target" class="target" name="target">
+        <option value="title">Title</option>
+        <option value="crime">Crime</option>
+        <option value="zipcode">Zipcode</option>
+    </select>
+
+    <label for="keyword" id="keyword_label">Enter your Keyword</label>
+    <input type="text" name="keyword" id="keyword">
+    <button type="submit" id="submit_button">Submit</button>
 </form>
 <br>
 <div id="result_block">
     <ol>
         {{#each report}}
         <li>
-            <a href="/reports/{{this.id}}" id="report_link">{{this.title}}</a>
+            <a href="/reports/{{this._id}}" id="report_link">{{this.title}}</a>
             <br>
             <p>{{this.desc}}</p>
         </li>

@@ -21,18 +21,26 @@ const seed = async () => {
 
   const user1 = await usersData.createUser(
     "alice",
-    "Password123!",
     "Alice",
     "Smith",
-    "alice@example.com"
+    23,
+    "Password123!",
+    "alice@example.com",
+    "NYC",
+    "Some State",
+    "11211"
   );
 
   const user2 = await usersData.createUser(
     "bob",
-    "Password123!",
     "Bob",
     "Johnson",
-    "bob@example.com"
+    30,
+    "Password123!",
+    "bob@example.com",
+    "NYC",
+    "Some State",
+    "11211"
   );
 
   console.log("Users created:", user1._id.toString(), user2._id.toString());
