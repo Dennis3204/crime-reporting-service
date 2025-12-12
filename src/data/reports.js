@@ -30,7 +30,7 @@ export const createReport = async (
   const validState = validation.validateString(state, 'state');
   const validCity = validation.validateString(city, 'city');
   const validArea = validation.validateString(area, 'area');
-  const validZip = validation.validateZip(zipcode, 'zipcode'); // <-- NOT IMPLEMENTED YET
+  const validZip = validation.validateZip(zipcode, 'zipcode'); 
   const validAnon = Boolean(isAnonymous);
 
   const imgArray = Array.isArray(imgPaths) ? imgPaths : [];
