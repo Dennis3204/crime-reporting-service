@@ -17,9 +17,9 @@ const constructorMethod = (app) => {
   app.use("/", searchRoutes);
   app.use("/reports", reportsRoutes);
   app.use("/public", express.static("public"));
-  app.use("{*splat}", (req, res) => {
+  app.use("*", (req, res) => {
     return errors.renderErrorPage(res, new errors.NotFoundError());
   });
-};
+  };
 
 export default constructorMethod;
