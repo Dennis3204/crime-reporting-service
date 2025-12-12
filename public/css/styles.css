@@ -22,3 +22,23 @@ dt {
 .logout-form {
   margin-top: 10px;
 }
+
+
+#container-map{
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+text{
+  visibility: hidden;
+}
+
+#label_points:hover{
+  fill:aqua
+}
+#onHover{
+  display: none;
+  padding: 10px;
+  border: 1px;
+  flex: 1
+}
