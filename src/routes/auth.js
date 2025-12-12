@@ -16,10 +16,10 @@ router.get("/signup", redirectIfLoggedIn, (req, res) => {
 });
 
 router.post("/signup", async (req, res) => {
-    let { username, first_name, last_name, age, password, street, city, state, zipcode } = req.body;
+    let { username, first_name, last_name, age, password, area, city, state, zipcode } = req.body;
     try {
-        const newUser = await createUser(username, first_name, last_name, age, password, street, city, state, zipcode);
-        req.session.user = {_id: newUser._id,username: newUser.username, address: newUser.address};
+        const newUser = await createUser(username, first_name, last_name, age, password, area, city, state, zipcode);
+        req.session.user = {_id: newUser._id,username: newUser.username, location: newUser.location};
         return res.redirect("/");
     } catch (e) {
         const code = e instanceof RenderableError ? e.code : 500;
@@ -35,7 +35,7 @@ router.post("/login", async (req, res) => {
     let { username, password } = req.body;
     try {
         const user = await checkUser(username, password);
-        req.session.user = {_id: user._id,username: user.username, address: user.address};
+        req.session.user = {_id: user._id,username: user.username, location: user.location};
         return res.redirect("/");
     } catch (e) {
         const code = e instanceof RenderableError ? e.code : 500;
