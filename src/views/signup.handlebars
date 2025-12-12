@@ -1,6 +1,8 @@
 <main>
     <h1>Create Account</h1>
 
+    <p id="client-error" class="error"></p>
+
     {{#if error}}
         <p class="error">{{error}}</p>
     {{/if}}
@@ -40,4 +42,6 @@
     </form>
 
     <p>Already have an account? <a href="/login">Log in here</a></p>
+
+    <script src="/public/js/signup.js"></script>
 </main>
