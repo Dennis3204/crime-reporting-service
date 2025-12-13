@@ -108,7 +108,6 @@ export const searchByKeyword = async (keyword) =>{
     let key_regex = new RegExp('.*' + keyword + '.*', 'i')
     const report = await collections.reports();
     const result = await report.find({title: {$regex: key_regex}}).toArray()
-    console.log(result)
     if(result.length === 0)
       throw "404"
     return result
@@ -118,7 +117,6 @@ export const searchByCrime = async (keyword) =>{
     let key_regex = new RegExp('.*' + keyword + '.*', 'i')
     const report = await collections.reports();
     const result = await report.find({crime: {$regex: key_regex}}).toArray()
-    console.log(result)
     if(result.length === 0)
       throw "404"
     return result
