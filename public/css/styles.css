@@ -45,11 +45,3 @@ text{
   border: 0px;
   flex: 1
 }
-
-form {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  align-items: center;
-  margin-bottom: 1rem;
-}
