@@ -7,9 +7,9 @@ svg.addEventListener('mousemove',function(event){
     const path = event.target.closest('path')
     const className = path.getAttribute("id")
     div.textContent = className
-    div.style.display="block"
+    div.style.visibility="visible"
 })
 
 svg.addEventListener('mouseleave',function(){
-    div.style.display ='none'
+    div.style.visibility ='hidden'
 })

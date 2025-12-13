@@ -32,18 +32,16 @@ dt {
 #container-map{
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 50px;
 }
 text{
   visibility: hidden;
 }
 
-#label_points:hover{
-  fill:aqua
-}
 #onHover{
-  display: none;
-  padding: 10px;
-  border: 1px;
+  visibility: hidden;
+  width:25px;
+  padding: 5px;
+  border: 0px;
   flex: 1
 }
