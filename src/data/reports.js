@@ -72,6 +72,7 @@ export const getReport = async (id, commentSort = "best") => {
   report.comments = await comments.getCommentsForReport(id);
   for (const comment of report.comments) {
     comment.author = await users.getUsername(comment.author_id);
+    if (!comment.created_at) console.log("BAD COMMENT:", comment);
     comment.time = comment.created_at.toLocaleString();
     comment.score = comment.liked_by.length - comment.disliked_by.length;
   }

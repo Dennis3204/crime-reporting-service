@@ -1,5 +1,7 @@
 import {BadRequestError} from "./errors.js";
 import {ObjectId} from "mongodb";
+import us from "us";
+
 
 const InvalidInputError = class extends BadRequestError {
   constructor(message) {
@@ -62,6 +64,15 @@ export const validateZipcode = (zipcode) => {
   return zipcode;
 };
 
+function validateUSState(state) {
+  const s = validateTrimmableString((state || "")).toUpperCase();
+
+  if (!Boolean(us.states[s])) { 
+    throw new InvalidInputError(`${state} is not a valid state.`);
+  }
+  return state;
+}
+
 export const validateBoolean = (bool, name) => {
   if (typeof bool !== "boolean")
     throw new InvalidInputError(`Expected ${name} to be a boolean.`);
@@ -86,6 +97,7 @@ export const validateReportData = (report) => {
   report.desc = validateTrimmableString(report.desc, "description");
   report.crime = validateTrimmableString(report.crime, "crime");
   report.state = validateTrimmableString(report.state, "state");
+  report.state = validateUSState(report.state);
   report.city = validateTrimmableString(report.city, "city");
   report.area = validateTrimmableString(report.area, "area");
   report.zipcode = validateZipcode(report.zipcode);

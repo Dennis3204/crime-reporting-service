@@ -13,17 +13,17 @@
   >
     <div>
       <label for="title">Title*</label>
-      <input type="text" id="title" name="title" required>
+      <input type="text" id="title" name="title" required value="{{prefill.title}}">
     </div>
 
     <div>
       <label for="desc">Description*</label>
-      <textarea id="desc" name="desc" required></textarea>
+      <textarea id="desc" name="desc" required>{{prefill.desc}}</textarea>
     </div>
 
     <div>
       <label for="crime">Crime Type*</label>
-      <input type="text" id="crime" name="crime" required>
+      <input type="text" id="crime" name="crime" required value="{{prefill.crime}}">
       {{!-- Later you can make this a <select> with fixed types --}}
     </div>
 
@@ -32,21 +32,21 @@
 
       <div>
         <label for="state">State</label>
-        <input type="text" id="state" name="state" required>
+        <input id="state" name="state" required value="{{prefill.state}}">
       </div>
 
       <div>
         <label for="city">City</label>
-        <input type="text" id="city" name="city" required>
+        <input id="city" name="city" required value="{{prefill.city}}">
       </div>
 
       <div>
         <label for="area">Neighborhood / Area</label>
-        <input type="text" id="area" name="area" required>
+        <input id="area" name="area" required value="{{prefill.area}}">
       </div>
 
       <div>
-        <label for="zipcode">ZIP Code</label>
+        <label for="zipcode">ZIP Code*</label>
         <input
           type="text"
           id="zipcode"
@@ -54,6 +54,7 @@
           required
           pattern="\d{5}"
           title="5-digit ZIP code"
+          value="{{prefill.zipcode}}"
         >
       </div>
     </fieldset>
@@ -65,7 +66,7 @@
 
     <div>
       <label>
-        <input type="checkbox" name="anonymous">
+        <input type="checkbox" name="anonymous" {{#if prefill.anonymous}}checked{{/if}}>
         Post as anonymous
       </label>
     </div>

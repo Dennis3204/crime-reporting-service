@@ -26,13 +26,17 @@ router.get("/new", (req, res) => {
 
     const loc = req.session.user.location || {};
     const prefill = {
+      title: "",
+      desc: "",
+      crime: "",
       state: loc.state || "",
       city: loc.city || "",
       area: loc.area || "",
-      zipcode: loc.zipcode || ""
+      zipcode: loc.zipcode || "",
+      anonymous: false
     };
 
-    return res.render("create-report", { title: "Create Report" });
+    return res.render("create-report", { title: "Create Report", prefill });
   } catch (e) {
     return helpers.renderErrorPage(res, e);
   }
@@ -74,6 +78,26 @@ router.post("/", upload.array("photos", 5), async (req, res) => {
 
     return res.redirect(`/reports/${report._id.toString()}`);
   } catch (e) {
+    // If it's a validation error (BadRequestError), re-render the form with error message
+    if (e instanceof helpers.BadRequestError) {
+      const {title, desc, crime, state, city, area, zipcode, anonymous} = req.body;
+      const prefill = {
+        title: title || "",
+        desc: desc || "",
+        crime: crime || "",
+        state: state || "",
+        city: city || "",
+        area: area || "",
+        zipcode: zipcode || "",
+        anonymous: anonymous === "on"
+      };
+      return res.render("create-report", {
+        title: "Create Report",
+        error: e.message,
+        prefill
+      });
+    }
+    // For other errors, use the generic error page
     return helpers.renderErrorPage(res, e);
   }
 });
