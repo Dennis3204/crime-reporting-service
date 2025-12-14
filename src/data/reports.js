@@ -28,7 +28,7 @@ export const createReport = async (
   const validState = validation.validateString(state, 'state');
   const validCity = validation.validateString(city, 'city');
   const validArea = validation.validateString(area, 'area');
-  const validZip = validation.validateZip(zipcode, 'zipcode'); 
+  const validZip = validation.validateZip(zipcode, 'zipcode');
   const validAnon = Boolean(isAnonymous);
 
   const imgArray = Array.isArray(imgPaths) ? imgPaths : [];
@@ -78,7 +78,11 @@ export const getReport = async (id, commentSort = "best") => {
   if (report === null)
     throw new errors.NotFoundError("Report not found.");
 
-  report.author = await users.getUsername(report.author_id);
+    if (report.isAnonymous) {
+      report.author = "Anonymous";
+    } else {
+      report.author = await users.getUsername(report.author_id);
+    }
 
   report.comments = await comments.getCommentsForReport(id);
   for (const comment of report.comments) {

@@ -4,7 +4,19 @@
     <section class="profile-summary">
         <h2>{{user.first_name}} {{user.last_name}}</h2>
         <p><strong>Username:</strong> {{user.username}}</p>
-        <p><strong>Total Reports Submitted:</strong> {{totalReports}}</p>
+
+        <h3>Your Reports</h3>
+        {{#if reports.length}}
+          <ul>
+            {{#each reports}}
+              <li>
+                <a href="/reports/{{_id}}">{{title}}</a>
+              </li>
+            {{/each}}
+          </ul>
+        {{else}}
+          <p>You have not submitted any reports yet.</p>
+        {{/if}}
     </section>
 
     {{#if error}}

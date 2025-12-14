@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { users } from "../config/mongoCollections.js";
+import { reports } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
 import * as validation from "../helpers/validation.js";
 import { RenderableError } from "../helpers/errors.js";
@@ -11,12 +12,15 @@ router.get("/", async (req, res) => {
       return res.redirect("/login");
   }
   const userCollection = await users();
+  const reportCollection = await reports();
   const user = await userCollection.findOne({ _id: new ObjectId(req.session.user._id) });
+
+  const userReports = await reportCollection.find({ author_id: user._id }).toArray();
 
   return res.render("profile", {
       title: "Your Profile",
       user: user,
-      totalReports: user.reports.length
+      reports: userReports
   });
 });
 
@@ -34,11 +38,13 @@ router.post("/", async (req, res) => {
         return res.status(400).render("profile", {
             title: "Your Profile",
             user: req.session.user,
+            reports: [],
             error: e.message
         });
     }
 
     const userCollection = await users();
+    const reportCollection = await reports();
 
     await userCollection.updateOne(
         { _id: new ObjectId(req.session.user._id) },
@@ -54,10 +60,11 @@ router.post("/", async (req, res) => {
     const updatedUser = await userCollection.findOne({
       _id: new ObjectId(req.session.user._id)
     });
+    const userReports = await reportCollection.find({ author_id: updatedUser._id }).toArray();
 
     req.session.user.location = updatedUser.location;
 
-    return res.render("profile", {title: "Your Profile", user: updatedUser, totalReports: updatedUser.reports.length, success: "Profile updated successfully!!"});
+    return res.render("profile", {title: "Your Profile", user: updatedUser, reports: userReports.length, success: "Profile updated successfully!!"});
 });
 
 export default router;
