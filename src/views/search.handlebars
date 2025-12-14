@@ -1,29 +1,33 @@
-<h1 id="search_title">Search Report</h1>
-<form id="search_form" action="/search/" method="POST">
-    <label for="target">Search for:</label>
-    <select id="target" class="target" name="target">
-        <option value="title">Title</option>
-        <option value="crime">Crime</option>
-        <option value="zipcode">Zipcode</option>
-    </select>
+<a href="/">Home</a>
+<a href="/reports">View All reports</a>
+<div id="search" class="search">
+    <h1 id="search_title">Search Report</h1>
+    <form id="search_form" action="/search/" method="POST">
+        <label for="target">Search for:</label>
+        <select id="target" class="target" name="target">
+            <option value="title">Title</option>
+            <option value="crime">Crime</option>
+        </select>
 
-    <label for="keyword" id="keyword_label">Enter your Keyword</label>
-    <input type="text" name="keyword" id="keyword">
-    <button type="submit" id="submit_button">Submit</button>
-</form>
-<br>
-<div id="result_block">
-    <ol>
-        {{#each report}}
-        <li>
-            <a href="/reports/{{this._id}}" id="report_link">{{this.title}}</a>
-            <br>
-            <p>{{this.desc}}</p>
-        </li>
-        {{/each}}
-    </ol>
-</div>
-<div id="error_block">
-    <p id="error_text">{{error}}</p>
+        <label for="keyword" id="keyword_label">Enter your Keyword</label>
+        <input type="text" name="keyword" id="keyword">
+        <button type="submit" id="submit_button">Submit</button>
+    </form>
+    <a href="/map" id="map_link">Click her to search using map</a>
+    <br>
+    <div id="error_block">
+        <p id="error" class="error">{{error}}</p>
+    </div>
+    <div id="result_block">
+        <ol class="result-list">
+            {{#each report}}
+            <li class="result-report">
+                <a href="/reports/{{this._id}}" id="report_link">{{this.title}}</a>
+                <br>
+                <p>{{this.desc}}</p>
+            </li>
+            {{/each}}
+        </ol>
+    </div>
 </div>
 <script src="/public/js/search.js"></script>

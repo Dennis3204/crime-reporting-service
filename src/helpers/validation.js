@@ -71,3 +71,11 @@ export const validateZipcode = (zipcode) => {
   return zipcode;
 };
 
+export const limitDesc = (result) =>{
+  for(let i of result){
+    i.desc = i.desc.slice(0,50) + "..."
+  }
+  return result
+}
+
+

@@ -39,9 +39,28 @@ text{
 }
 
 #onHover{
-  visibility: hidden;
   width:25px;
   padding: 5px;
   border: 0px;
   flex: 1
+}
+
+.search{
+  text-align: center;
+}
+.map-search{
+  text-align: center;
+}
+
+.result-list{
+  border-top: 5px solid black;
+  list-style-position: inside
+}
+.result-report{
+  padding: 10px;
+}
+
+.OnHover-Zip-Label{
+  font-weight: bold;
+  text-decoration: underline;
 }
