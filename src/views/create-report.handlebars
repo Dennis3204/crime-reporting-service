@@ -1,4 +1,4 @@
-<main>
+<main class="create-report-page">
   <h1>Create a Crime Report</h1>
 
   {{#if error}}
@@ -64,7 +64,7 @@
       <input type="file" id="photos" name="photos" accept="image/*" multiple>
     </div>
 
-    <div>
+    <div class="checkbox-field">
       <label>
         <input type="checkbox" name="anonymous" {{#if prefill.anonymous}}checked{{/if}}>
         Post as anonymous
@@ -73,4 +73,5 @@
 
     <button type="submit">Submit Report</button>
   </form>
+  <a href="/" class="back-button">← Back to Home</a>
 </main>
