@@ -1,24 +1,41 @@
 <main>
     {{#with report}}
         <h1>{{title}}</h1>
+        {{#ifEq author ../user.username}}
+            <a href="/reports/{{_id}}/edit"><button>Edit report</button></a>
+            <a href="/reports/{{_id}}/delete"><button>Delete report</button></a>
+        {{/ifEq}}
         <h2>Details</h2>
         <dl>
-            <dt>Author:</dt>
-            <dd>{{author}}</dd>
+            {{#unless is_anonymous}}
+                <dt>Author:</dt>
+                <dd>{{author}}</dd>
+            {{/unless}}
             <dt>Classification:</dt>
             <dd>{{crime}}</dd>
             <dt>Location:</dt>
-            <dd>{{area}}, {{city}}, {{state}}</dd>
+            <dd>{{area}}, {{city}}, {{state}} ({{zipcode}})</dd>
+            <dt>Created on:</dt>
+            <dd>{{created_at}}</dd>
+            <dt>Last edited on:</dt>
+            <dd>{{edited_at}}</dd>
         </dl>
+        <h2>Images</h2>
+        {{#each img}}
+            <img src="{{img}}" alt="Photo for report '{{../title}}'">
+        {{else}}
+            <p>No images provided.</p>
+        {{/each}}
         <h2>Description</h2>
         <p>{{desc}}</p>
         <h2>Comments</h2>
         {{#if ../user}}
-            <form action="{{_id}}/comment" method="POST">
+            <form id="comment-form" action="{{_id}}/comment" method="POST">
                 <label for="comment">Leave a comment:</label>
                 <textarea id="comment" name="comment"></textarea>
                 <input type="submit" value="Submit">
             </form>
+            <p id="comment-error" hidden="hidden">Error: Comment must contain non-whitespace characters.</p>
             <br> <!-- TODO: Remove <br> after implementing CSS styling -->
         {{/if}}
         <form action="{{_id}}" method="GET">
@@ -52,3 +69,4 @@
         </dl>
     {{/with}}
 </main>
+<script type="module" src="/js/report.js"></script>

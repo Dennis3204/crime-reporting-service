@@ -4,6 +4,7 @@ import session from "express-session";
 import configRoutesFunction from "./routes/index.js";
 import {closeConnection, dbConnection} from "./config/mongoConnection.js";
 import registerHelpers from "./helpers/handlebars.js";
+import configureMiddleware from "./helpers/middleware.js";
 
 console.log("Establishing database connection...");
 await dbConnection();
@@ -22,34 +23,8 @@ app.set("view engine", "handlebars");
 app.set("views", "src/views");
 
 registerHelpers(hbs);
-
-app.use("/search",(req,res,next) =>{
-  if(!req.session.user){
-    return res.redirect("/login")
-  }
-  next()
-})
-app.use("/map",(req,res,next) =>{
-  if(!req.session.user){
-    return res.redirect("/login")
-  }
-  next()
-})
-app.use("/reports",(req,res,next) =>{
-  if(!req.session.user){
-    return res.redirect("/login")
-  }
-  next()
-})
-app.use("/logout",(req,res,next) =>{
-  if(!req.session.user){
-    return res.redirect("/login")
-  }
-  next()
-})
-
+configureMiddleware(app);
 configRoutesFunction(app);
-
 
 const server = app.listen(3000, () => {
   console.log("We've now got a server!");
