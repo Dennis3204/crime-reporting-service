@@ -49,31 +49,29 @@ const seed = async () => {
 
   console.log("Creating reports...");
 
-  const report1 = await reportsData.createReport(user1._id.toString(), {
-    title: "Suspicious activity near my block",
-    desc: "Saw a person checking car door handles around 2am.",
-    crime: "SUSPICIOUS ACTIVITY",
-    state: "NY",
-    city: "Brooklyn",
-    area: "Williamsburg",
-    zipcode: "11211",
-    imgPaths: [],            
-    isAnonymous: false
-  });
+  const report1 = await reportsData.createReport(user1._id.toString(),
+    "Suspicious activity near my block",
+    "Saw a person checking car door handles around 2am.",
+    "SUSPICIOUS ACTIVITY",
+    "NY",
+    "Brooklyn",
+    "Williamsburg",
+    "11211",
+    [],
+    false
+  );
 
-  const report2 = await reportsData.createReport(user2._id.toString(), {
-    title: "Attempted bike theft",
-    desc: "Someone tried cutting my bike lock. They ran when confronted.",
-    crime: "LARCENY",
-    state: "NY",
-    city: "Manhattan",
-    area: "Upper East Side",
-    zipcode: "10021",
-    imgPaths: [              
-      "/public/uploads/reports/example1.jpg"
-    ],
-    isAnonymous: true
-  });
+  const report2 = await reportsData.createReport(user2._id.toString(),
+    "Attempted bike theft",
+    "Someone tried cutting my bike lock. They ran when confronted.",
+    "LARCENY",
+    "NY",
+    "Manhattan",
+    "Upper East Side",
+    "10021",
+    ["/public/uploads/reports/example1.jpg"],
+    true
+  );
 
   console.log("Reports created:", report1._id.toString(), report2._id.toString());
 
