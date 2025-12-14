@@ -77,6 +77,21 @@ router.post("/:id", async (req, res) => {
   }
 });
 
+router.get("/:id/delete", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const report = await reports.getReport(id);
+    if (!report.author_id.equals(req.session.user._id))
+      throw new helpers.UnauthorizedError();
+
+    await reports.deleteReport(id);
+
+    return res.redirect("/reports");
+  } catch (e) {
+    return helpers.renderErrorPage(res, e);
+  }
+});
+
 router.get("/:id/edit", async (req, res) => {
   try {
     return res.render("edit-report", {report: await reports.getReport(req.params.id)});

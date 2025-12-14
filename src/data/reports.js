@@ -38,6 +38,16 @@ export const updateReport = async (id, title, desc, crime, state, city, area, zi
     throw new errors.NotFoundError("Report not found");
 };
 
+export const deleteReport = async (id) => {
+  id = validation.validateObjectId(id, "report ID");
+  const reports = await collections.reports();
+  const result = await reports.deleteOne({_id: id});
+  if (!result.acknowledged)
+    throw new Error("Could not delete report");
+  else if (result.deletedCount === 0)
+    throw new errors.NotFoundError("Report not found");
+};
+
 export const getReportList = async () => {
   const reports = await collections.reports();
   return reports.find({}, {_id: 1, title: 1}).toArray();

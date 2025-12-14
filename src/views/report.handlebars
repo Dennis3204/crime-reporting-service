@@ -3,6 +3,7 @@
         <h1>{{title}}</h1>
         {{#ifEq author ../user.username}}
             <a href="/reports/{{_id}}/edit"><button>Edit report</button></a>
+            <a href="/reports/{{_id}}/delete"><button>Delete report</button></a>
         {{/ifEq}}
         <h2>Details</h2>
         <dl>
