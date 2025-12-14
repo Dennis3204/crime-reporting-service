@@ -61,6 +61,30 @@ router.post("/", upload.array("photos", 5), async (req, res) => {
   }
 });
 
+router.post("/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const report = await reports.getReport(id);
+    if (!report.author_id.equals(req.session.user?._id))
+      throw new helpers.UnauthorizedError();
+
+    const {title, desc, crime, state, city, area, zipcode, anonymous} = req.body;
+    await reports.updateReport(id, title, desc, crime, state, city, area, zipcode, anonymous === "on");
+
+    return res.redirect(`/reports/${report._id.toString()}`);
+  } catch (e) {
+    return helpers.renderErrorPage(res, e);
+  }
+});
+
+router.get("/:id/edit", async (req, res) => {
+  try {
+    return res.render("edit-report", {report: await reports.getReport(req.params.id)});
+  } catch (e) {
+    return helpers.renderErrorPage(res, e);
+  }
+})
+
 router.post("/:id/comment", async (req, res) => {
   try {
     if (req.session.user === undefined)

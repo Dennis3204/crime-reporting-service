@@ -11,6 +11,7 @@ export const createReport = async (authorId, title, desc, crime, state, city,
   let report = {author_id: authorId, title, desc, crime, state, city, area, zipcode, img, is_anonymous: isAnonymous};
   validation.validateReport(report);
   report.created_at = new Date();
+  report.edited_at = new Date();
 
   const reports = await collections.reports();
   const result = await reports.insertOne(report);
@@ -20,6 +21,21 @@ export const createReport = async (authorId, title, desc, crime, state, city,
 
   report._id = result.insertedId;
   return report;
+};
+
+export const updateReport = async (id, title, desc, crime, state, city, area, zipcode, isAnonymous) => {
+
+  id = validation.validateObjectId(id, "report ID");
+  let reportData = {title, desc, crime, state, city, area, zipcode, is_anonymous: isAnonymous};
+  reportData = validation.validateReportData(reportData);
+  reportData.edited_at = new Date();
+
+  const reports = await collections.reports();
+  const result = await reports.updateOne({_id: id}, {$set: reportData});
+  if (!result.acknowledged)
+    throw new Error("Could not update report");
+  else if (result.matchedCount === 0)
+    throw new errors.NotFoundError("Report not found");
 };
 
 export const getReportList = async () => {
