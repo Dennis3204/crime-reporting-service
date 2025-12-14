@@ -83,7 +83,7 @@ export const getReport = async (id, commentSort = "best") => {
   report.comments = await comments.getCommentsForReport(id);
   for (const comment of report.comments) {
     comment.author = await users.getUsername(comment.author_id);
-    comment.time = new Date(comment.timestamp).toLocaleString();
+    comment.time = comment.created_at.toLocaleString();
     comment.score = comment.liked_by.length - comment.disliked_by.length;
   }
 
@@ -93,9 +93,9 @@ export const getReport = async (id, commentSort = "best") => {
   else if (commentSort === "worst")
     sortFunc = (a, b) => (a.score - b.score);
   else if (commentSort === "newest")
-    sortFunc = (a, b) => (b.timestamp - a.timestamp);
+    sortFunc = (a, b) => (b.created_at - a.created_at);
   else if (commentSort === "oldest")
-    sortFunc = (a, b) => (a.timestamp - b.timestamp);
+    sortFunc = (a, b) => (a.created_at - b.created_at);
   else
     throw new errors.BadRequestError("Invalid comment sort order.");
   report.comments.sort(sortFunc);
