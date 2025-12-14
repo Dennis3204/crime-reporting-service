@@ -20,11 +20,12 @@
         <p>{{desc}}</p>
         <h2>Comments</h2>
         {{#if ../user}}
-            <form action="{{_id}}/comment" method="POST">
+            <form id="comment-form" action="{{_id}}/comment" method="POST">
                 <label for="comment">Leave a comment:</label>
                 <textarea id="comment" name="comment"></textarea>
                 <input type="submit" value="Submit">
             </form>
+            <p id="comment-error" hidden="hidden">Error: Comment must contain non-whitespace characters.</p>
             <br> <!-- TODO: Remove <br> after implementing CSS styling -->
         {{/if}}
         <form action="{{_id}}" method="GET">
@@ -58,3 +59,4 @@
         </dl>
     {{/with}}
 </main>
+<script type="module" src="/js/report.js"></script>
