@@ -3,8 +3,10 @@
         <h1>{{title}}</h1>
         <h2>Details</h2>
         <dl>
-            <dt>Author:</dt>
-            <dd>{{author}}</dd>
+            {{#unless isAnonymous}}
+                <dt>Author:</dt>
+                <dd>{{author}}</dd>
+            {{/unless}}
             <dt>Classification:</dt>
             <dd>{{crime}}</dd>
             <dt>Location:</dt>
