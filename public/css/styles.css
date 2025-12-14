@@ -1,6 +1,17 @@
 dt {
     font-weight: bold;
 }
+body > a {
+  margin-right: 20px;
+  text-decoration: none;
+  color: #007bff;
+  font-size: 16px;
+}
+
+body > a:hover {
+  text-decoration: underline;
+}
+
 .top-nav {
   position: fixed;
   top: 10px;
@@ -65,8 +76,34 @@ text{
   text-decoration: underline;
 }
 
-main > h1 {
+/* Center title only on create-report page */
+main.create-report-page > h1 {
   text-align: center;
+}
+
+.back-button {
+  display: inline-block;
+  margin-top: 20px;
+  margin-left: calc((100% - 600px) / 2);
+  padding: 8px 16px;
+  background-color: #f0f0f0;
+  color: #000000;
+  text-decoration: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+@media (max-width: 600px) {
+  .back-button {
+    margin-left: 0;
+  }
+}
+
+.back-button:hover {
+  background-color: #e0e0e0;
+  text-decoration: none;
 }
 
 #report-form {
