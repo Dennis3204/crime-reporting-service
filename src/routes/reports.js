@@ -9,7 +9,7 @@ const router = new Router();
 router.get("/", async (req, res) => {
   try {
     const reportList = await reports.getReportList();
-    return res.render("reports", {reports: reportList});
+    return res.render("reports", {reports: reportList,user: req.session.user});
   } catch (e) {
     return helpers.renderErrorPage(res, e);
   }
@@ -21,7 +21,7 @@ router.get("/new", (req, res) => {
     if (req.session.user === undefined)
       throw new helpers.UnauthorizedError();
 
-    return res.render("create-report", { title: "Create Report" });
+    return res.render("create-report", { title: "Create Report",user: req.session.user });
   } catch (e) {
     return helpers.renderErrorPage(res, e);
   }
