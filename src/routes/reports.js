@@ -18,14 +18,22 @@ router.get("/", async (req, res) => {
 
 router.get("/new", (req, res) => {
   try {
-    if (req.session.user === undefined)
-      throw new helpers.UnauthorizedError();
+    if (!req.session.user) throw new helpers.UnauthorizedError();
 
-    return res.render("create-report", { title: "Create Report" });
+    const loc = req.session.user.location || {};
+    const prefill = {
+      state: loc.state || "",
+      city: loc.city || "",
+      area: loc.area || "",
+      zipcode: loc.zipcode || ""
+    };
+
+    return res.render("create-report", { title: "Create Report", prefill });
   } catch (e) {
     return helpers.renderErrorPage(res, e);
   }
 });
+
 
 
 router.get("/:id", async (req, res) => {
