@@ -1,28 +1,31 @@
-<h1 id="search_title">Search Report</h1>
-<form id="search_form" action="/search/" method="POST">
-    <label for="target">Search for:</label>
-    <select id="target" class="target" name="target">
-        <option value="title">Title</option>
-        <option value="crime">Crime</option>
-        <option value="zipcode">Zipcode</option>
-    </select>
-
-    <label for="keyword" id="keyword_label">Enter your Keyword</label>
-    <input type="text" name="keyword" id="keyword">
-    <button type="submit" id="submit_button">Submit</button>
-</form>
-<br>
-<div id="result_block">
-    <ol>
-        {{#each report}}
-        <li>
-            <a href="/reports/{{this._id}}" id="report_link">{{this.title}}</a>
-            <br>
-            <p>{{this.desc}}</p>
-        </li>
-        {{/each}}
-    </ol>
-</div>
-<div id="error_block">
-    <p id="error_text">{{error}}</p>
-</div>
+<main>
+    <h1 id="search_title">Search Reports</h1>
+    <form id="search_form" action="/search/" method="POST">
+        <label for="target">Search by: </label>
+        <select id="target" class="target" name="target">
+            <option value="title">Title</option>
+            <option value="crime">Classification</option>
+            <option value="zipcode">Zipcode</option>
+        </select>
+        <br>
+        <label for="keyword" id="keyword_label">Search value: </label>
+        <input type="text" name="keyword" id="keyword">
+        <br>
+        <button type="submit" id="submit_button">Submit</button>
+    </form>
+    <br>
+    <div id="result_block">
+        <ol>
+            {{#each report}}
+                <li>
+                    <a href="/reports/{{this._id}}" id="report_link">{{this.title}}</a>
+                    <br>
+                    <p>{{this.desc}}</p>
+                </li>
+            {{/each}}
+        </ol>
+    </div>
+    <div id="error_block">
+        <p id="error_text">{{error}}</p>
+    </div>
+</main>
