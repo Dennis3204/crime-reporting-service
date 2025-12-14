@@ -28,25 +28,23 @@
     {{/if}}
 
     <form action="/profile" method="POST">
-
         <h3>Location Information</h3>
-
-        <label for="area">Neighborhood / Area</label>
+        <label for="area">Neighborhood / Area: </label>
         <input type="text" id="area" name="area" value="{{user.location.area}}" required>
-
-        <label for="city">City</label>
+        <br>
+        <label for="city">City: </label>
         <input type="text" id="city" name="city" value="{{user.location.city}}" required>
-
-        <label for="state">State</label>
+        <br>
+        <label for="state">State: </label>
         <input type="text" id="state" name="state" value="{{user.location.state}}" required>
-
-        <label for="zipcode">ZIP Code</label>
+        <br>
+        <label for="zipcode">ZIP Code: </label>
         <input type="text" id="zipcode" name="zipcode" value="{{user.location.zipcode}}" required pattern="\d{5}">
-
+        <br>
         <button type="submit">Save & Update</button>
     </form>
 
     <form action="/logout" method="GET" class="logout-form">
-  <button type="submit">Logout</button>
+        <button type="submit">Logout</button>
     </form>
 </main>
