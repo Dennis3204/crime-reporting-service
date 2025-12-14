@@ -2,8 +2,12 @@
     <h1>{{title}}</h1>
     <p>Welcome, We will help you to get information about Criminal Activites reported by others</p>
 
-    <p><a href="/reports">View reports</a></p>
-    <p><a href="/reports/new">Report a crime</a></p>
-    <p><a href="/search">Search for a report</a></p>
-    <p><a href="/map">Search for a report using map</a></p>
+    <h1>Recent Reports</h1>
+    <ul>
+        {{#each (limit reports 3)}}
+        <li><a href="reports/{{_id}}">{{title}}</a></li>
+        {{else}}
+        <p>No reports are available.</p>
+        {{/each}}
+    </ul>
 </main>

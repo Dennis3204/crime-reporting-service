@@ -4,6 +4,10 @@ function ifEq(lhs, rhs, options) {
 
 const registerHelpers = ({handlebars}) => {
   handlebars.registerHelper("ifEq", ifEq);
+  handlebars.registerHelper("limit", (arr, limit) => {
+    if (!Array.isArray(arr)) return [];
+    return arr.slice(0, limit);
+  });
 };
 
 export default registerHelpers;

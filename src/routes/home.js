@@ -1,4 +1,5 @@
 import {Router} from "express";
+import * as reportsData from "../data/reports.js";
 
 const router = new Router();
 
@@ -9,8 +10,9 @@ const requireLogin = (req, res, next) => {
   next();
 };
 
-router.get("/", requireLogin, (req, res) => {
-  res.render("home", { title: "Home", user: req.session.user});
+router.get("/", requireLogin, async (req, res) => {
+  const reports = await reportsData.getReportList();
+  res.render("home", { title: "Home", user: req.session.user, reports: reports});
 });
 
 export default router;
