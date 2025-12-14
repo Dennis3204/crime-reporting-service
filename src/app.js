@@ -20,9 +20,36 @@ const hbs = exphbs.create({defaultLayout: "main"});
 app.engine("handlebars", hbs.engine);
 app.set("view engine", "handlebars");
 app.set("views", "src/views");
+
 registerHelpers(hbs);
 
+app.use("/search",(req,res,next) =>{
+  if(!req.session.user){
+    return res.redirect("/login")
+  }
+  next()
+})
+app.use("/map",(req,res,next) =>{
+  if(!req.session.user){
+    return res.redirect("/login")
+  }
+  next()
+})
+app.use("/reports",(req,res,next) =>{
+  if(!req.session.user){
+    return res.redirect("/login")
+  }
+  next()
+})
+app.use("/logout",(req,res,next) =>{
+  if(!req.session.user){
+    return res.redirect("/login")
+  }
+  next()
+})
+
 configRoutesFunction(app);
+
 
 const server = app.listen(3000, () => {
   console.log("We've now got a server!");
