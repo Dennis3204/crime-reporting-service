@@ -1,13 +1,14 @@
 import {Router} from "express";
 import * as reports from "../data/reports.js";
 import * as helpers from "../helpers/errors.js";
+import * as help_valid from "../helpers/validation.js"
 
 const router = new Router();
 
 router
     .route('/search')
     .get(async (req , res)=>{
-        return res.render('search',{title: "Search"})
+        return res.render('search',{title: "Search",user: req.session.user})
     })
     .post(async (req, res) =>{
         let search_body = req.body 
@@ -19,28 +20,14 @@ router
                 result = await reports.searchByKeyword(keyword)
             }else if(target === "crime"){
                 result = await reports.searchByCrime(keyword)
-            }else if(target ==='zipcode'){
-                result = await reports.searchByZipCode(keyword)
             }
-            return res.render('search',{title:"Search",report:result})
+            if(result.length !== 0){
+                result = help_valid.limitDesc(result)
+            }
+            return res.render('search',{title:"Search",report:result,user: req.session.user})
         }catch(e){
             if(e === "404"){
-                return res.status(404).render("search",{title:"Search", error:"Not found"})
-            }else{
-                return helpers.renderErrorPage(res, e);
-            }
-        }
-    })
-router
-    .route('/search/:zip')
-    .get(async(req,res)=>{
-        const zip = req.params.zip
-        try{
-            result = await reports.searchByZipCode(zip)
-            return res.render('search',{title:"Search",report:result})
-        }catch(e){
-            if(e === "404"){
-                return res.status(404).render("search",{title:"Search", error:"Not found"})
+                return res.status(404).render("search",{title:"Search", error:"Not Reports found",user: req.session.user})
             }else{
                 return helpers.renderErrorPage(res, e);
             }
