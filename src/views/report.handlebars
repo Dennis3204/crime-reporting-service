@@ -10,6 +10,12 @@
             <dt>Location:</dt>
             <dd>{{area}}, {{city}}, {{state}}</dd>
         </dl>
+        <h2>Images</h2>
+        {{#each img}}
+            <img src="{{img}}" alt="Photo for report '{{../title}}'">
+        {{else}}
+            <p>No images provided.</p>
+        {{/each}}
         <h2>Description</h2>
         <p>{{desc}}</p>
         <h2>Comments</h2>
