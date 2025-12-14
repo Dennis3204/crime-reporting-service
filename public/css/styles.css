@@ -1,6 +1,37 @@
+@font-face {
+  font-family: "Inter";
+  src: url("/public/fonts/inter/Inter-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "InterVariable";
+  src: url("/public/fonts/inter/Inter-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+}
+
+:root { font-family: Inter, sans-serif; }
+
+@supports (font-variation-settings: normal) {
+  :root { font-family: InterVariable, sans-serif; }
+}
+
 dt {
     font-weight: bold;
 }
+body > a {
+  margin-right: 20px;
+  text-decoration: none;
+  color: #007bff;
+  font-size: 16px;
+}
+
+body > a:hover {
+  text-decoration: underline;
+}
+
 .top-nav {
   position: fixed;
   top: 10px;
@@ -63,4 +94,125 @@ text{
 .OnHover-Zip-Label{
   font-weight: bold;
   text-decoration: underline;
+}
+
+/* Center title only on create-report page */
+main.create-report-page > h1 {
+  text-align: center;
+}
+
+.back-button {
+  display: inline-block;
+  margin-top: 20px;
+  margin-left: calc((100% - 600px) / 2);
+  padding: 8px 16px;
+  background-color: #f0f0f0;
+  color: #000000;
+  text-decoration: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+@media (max-width: 600px) {
+  .back-button {
+    margin-left: 0;
+  }
+}
+
+.back-button:hover {
+  background-color: #e0e0e0;
+  text-decoration: none;
+}
+
+#report-form {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+#report-form > div,
+#report-form fieldset {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#report-form > div > label,
+#report-form fieldset > div > label {
+  min-width: 150px;
+  text-align: left;
+  flex-shrink: 0;
+}
+
+#report-form > div > input[type="text"],
+#report-form > div > textarea,
+#report-form fieldset > div > input {
+  width: 400px;
+  max-width: 400px;
+  flex-shrink: 0;
+}
+
+#report-form > div > textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+#report-form > div > label[for="desc"] {
+  align-self: flex-start;
+  padding-top: 5px;
+}
+
+#report-form > div > input[type="file"] {
+  width: 400px;
+  max-width: 400px;
+  flex-shrink: 0;
+}
+
+#report-form > div.checkbox-field {
+  display: flex;
+  align-items: center;
+}
+
+#report-form > div.checkbox-field > label {
+  min-width: auto;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+#report-form fieldset {
+  border: 1px solid #ccc;
+  padding: 15px 0 15px 15px;
+  display: block;
+}
+
+#report-form fieldset > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+#report-form fieldset > div > input {
+  width: 385px;
+  max-width: 385px;
+}
+
+#report-form fieldset > div:last-child {
+  margin-bottom: 0;
+}
+
+#report-form legend {
+  padding: 0 10px;
+  font-weight: bold;
+}
+
+#report-form button[type="submit"] {
+  display: block;
+  margin: 20px auto 0;
+  padding: 10px 30px;
+  font-size: 16px;
 }
