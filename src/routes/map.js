@@ -22,7 +22,7 @@ router
             return res.render('map',{title:"Map",report:result,zipcode:zip,user: req.session.user})
         }catch(e){
             if(e === "404"){
-                return res.status(404).render("map",{title:"Map", error:"Not Reports found",zipcode:zip,user: req.session.user})
+                return res.status(404).render("map",{title:"Map", error:"No reports found", zipcode: zip, user: req.session.user})
             }else{
                 return helpers.renderErrorPage(res, e);
             }

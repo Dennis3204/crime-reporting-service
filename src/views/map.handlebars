@@ -1,6 +1,6 @@
 <div id="map-search" class="map-search">
-    <h1 class="map_title">NYC Zip-Code Map</h1>
-    <p>Hover over to the Zip-Code area that you want the list of reports:</p>
+    <h1 class="map_title">NYC ZIP Code Map</h1>
+    <p>Hover over the ZIP code whose reports you want to view:</p>
 </div>
 <div id="container-map">
     <svg baseprofile="tiny" fill="#ececec" height="968" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width=".1" version="1.2" viewbox="0 0 1000 968" width="1000" xmlns="http://www.w3.org/2000/svg" name="NYC Zipcode Map">
@@ -1743,12 +1743,12 @@
     </g>
     </svg>
     <div id="onHover">
-        <p id="OnHover-Zip-Label" class="OnHover-Zip-Label">Zip-Code:</p>
+        <p id="OnHover-Zip-Label" class="OnHover-Zip-Label">Hovered ZIP Code:</p>
         <p id="OnHover-Zip">-----</p>
     </div>
     <div id="result_block">
         {{#if zipcode}}
-        <p>Showing reports of Zip-Code {{zipcode}}:-</p>
+        <p>Reports for ZIP code {{zipcode}}:</p>
         {{/if}}
         <ol class="result-list-map">
             {{#each report}}
