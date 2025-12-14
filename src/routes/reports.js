@@ -9,7 +9,11 @@ const router = new Router();
 router.get("/", async (req, res) => {
   try {
     const reportList = await reports.getReportList();
-    return res.render("reports", {reports: reportList});
+    return res.render("reports", {
+      title: "Reports",
+      reports: reportList,
+      user: req.session.user
+    });
   } catch (e) {
     return helpers.renderErrorPage(res, e);
   }
@@ -21,7 +25,10 @@ router.get("/new", (req, res) => {
     if (req.session.user === undefined)
       throw new helpers.UnauthorizedError();
 
-    return res.render("create-report", { title: "Create Report" });
+    return res.render("create-report", {
+      title: "Create Report",
+      user: req.session.user
+    });
   } catch (e) {
     return helpers.renderErrorPage(res, e);
   }
@@ -31,7 +38,12 @@ router.get("/new", (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     const report = await reports.getReport(req.params.id, req.query.sort);
-    return res.render("report", {report, sort: req.query.sort, user: req.session.user});
+    return res.render("report", {
+      title: report.title,
+      report,
+      sort: req.query.sort,
+      user: req.session.user
+    });
   } catch (e) {
     return helpers.renderErrorPage(res, e);
   }
@@ -94,7 +106,11 @@ router.get("/:id/delete", async (req, res) => {
 
 router.get("/:id/edit", async (req, res) => {
   try {
-    return res.render("edit-report", {report: await reports.getReport(req.params.id)});
+    return res.render("edit-report", {
+      title: "Edit Report",
+      report: await reports.getReport(req.params.id),
+      user: req.session.user
+    });
   } catch (e) {
     return helpers.renderErrorPage(res, e);
   }
