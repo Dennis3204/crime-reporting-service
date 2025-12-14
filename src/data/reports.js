@@ -3,65 +3,24 @@ import * as users from "./users.js";
 import * as collections from "../config/mongoCollections.js";
 import * as errors from "../helpers/errors.js";
 import * as validation from "../helpers/validation.js";
-import { ObjectId } from "mongodb";
 
+export const createReport = async (authorId, title, desc, crime, state, city,
+                                   area, zipcode, imgPaths, isAnonymous) => {
 
-export const createReport = async (
-  authorId,
-  {
-    title,
-    desc,
-    crime,
-    state,
-    city,
-    area,
-    zipcode,
-    imgPaths,
-    isAnonymous
-  }
-) => {
-  // validate IDs & strings using your helper functions
-  const validAuthorId = validation.validateObjectId(authorId, 'authorId');
-  const validTitle = validation.validateString(title, 'title');
-  const validDesc = validation.validateString(desc, 'description');
-  const validCrime = validation.validateString(crime, 'crime');
-  const validState = validation.validateString(state, 'state');
-  const validCity = validation.validateString(city, 'city');
-  const validArea = validation.validateString(area, 'area');
-  const validZip = validation.validateZipcode(zipcode);
-  const validAnon = Boolean(isAnonymous);
-
-  const imgArray = Array.isArray(imgPaths) ? imgPaths : [];
-
-  const reportDoc = {
-    author_id: validAuthorId,
-    title: validTitle,
-    desc: validDesc,
-    img: imgArray,
-    crime: validCrime,
-    state: validState,
-    city: validCity,
-    area: validArea,
-    zipcode: validZip,
-    upvotes: 0,
-    downvotes: 0,
-    comments: [],
-    isAnonymous: validAnon,
-    createdAt: new Date()
-  };
+  const img = Array.isArray(imgPaths) ? imgPaths : [];
+  let report = {author_id: authorId, title, desc, crime, state, city, area, zipcode, img, is_anonymous: isAnonymous};
+  validation.validateReport(report);
+  report.created_at = new Date();
 
   const reports = await collections.reports();
-  const insertInfo = await reports.insertOne(reportDoc);
-
-
-  if (!insertInfo.acknowledged || !insertInfo.insertedId) {
-    throw new Error('Could not create report');
+  const result = await reports.insertOne(report);
+  if (!result.acknowledged || !result.insertedId) {
+    throw new Error("Could not create report");
   }
 
-  reportDoc._id = insertInfo.insertedId;
-  return reportDoc;
+  report._id = result.insertedId;
+  return report;
 };
-
 
 export const getReportList = async () => {
   const reports = await collections.reports();

@@ -62,3 +62,40 @@ export const validateZipcode = (zipcode) => {
   return zipcode;
 };
 
+export const validateBoolean = (bool, name) => {
+  if (typeof bool !== "boolean")
+    throw new InvalidInputError(`Expected ${name} to be a boolean.`);
+  return bool;
+};
+
+export const validateArray = (arr, name) => {
+  if (!Array.isArray(arr))
+    throw new InvalidInputError(`Expected ${name} to be an array.`);
+  return arr;
+}
+
+export const validateObject = (obj, name) => {
+  if (typeof obj !== "object" || obj === null)
+    throw new InvalidInputError(`Expected ${name} to be an object.`);
+  return obj;
+}
+
+export const validateReportData = (report) => {
+  report = validateObject(report, "report");
+  report.title = validateTrimmableString(report.title, "title");
+  report.desc = validateTrimmableString(report.desc, "description");
+  report.crime = validateTrimmableString(report.crime, "crime");
+  report.state = validateTrimmableString(report.state, "state");
+  report.city = validateTrimmableString(report.city, "city");
+  report.area = validateTrimmableString(report.area, "area");
+  report.zipcode = validateZipcode(report.zipcode);
+  report.is_anonymous = validateBoolean(report.is_anonymous, "anonymity");
+  return report;
+}
+
+export const validateReport = (report) => {
+  report = validateReportData(report);
+  report.author_id = validateObjectId(report.author_id, "author ID");
+  report.img = validateArray(report.img, "images");
+  return report;
+};

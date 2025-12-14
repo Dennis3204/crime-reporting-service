@@ -38,53 +38,28 @@ router.get("/:id", async (req, res) => {
 });
 
 
-router.post(
-  "/",
-  upload.array("photos", 5), // "photos" must match
-  async (req, res) => {
-    try {
-      if (req.session.user === undefined)
-        throw new helpers.UnauthorizedError();
+router.post("/", upload.array("photos", 5), async (req, res) => {
+  try {
+    if (req.session.user === undefined)
+      throw new helpers.UnauthorizedError();
 
-      const userId = req.session.user._id;
+    const authorId = req.session.user._id;
+    const {title, desc, crime, state, city, area, zipcode, anonymous} = req.body;
 
-      const {
-        title,
-        desc,
-        crime,
-        state,
-        city,
-        area,
-        zipcode,
-        anonymous
-      } = req.body;
+    // Map uploaded files to public URLs
+    const imgPaths =
+      Array.isArray(req.files) && req.files.length > 0
+        ? req.files.map((f) => `/public/uploads/reports/${f.filename}`)
+        : [];
 
-      // Map uploaded files to public URLs
-      const imgPaths =
-        Array.isArray(req.files) && req.files.length > 0
-          ? req.files.map((f) => `/public/uploads/reports/${f.filename}`)
-          : [];
+    const report = await reports.createReport(authorId, title, desc,
+      crime, state, city, area, zipcode, imgPaths, anonymous === "on");
 
-      const report = await reports.createReport(userId, {
-        title,
-        desc,
-        crime,
-        state,
-        city,
-        area,
-        zipcode,
-        imgPaths,
-        isAnonymous: anonymous === "on"
-      });
-
-      return res.redirect(`/reports/${report._id.toString()}`);
-    } catch (e) {
-
-      return helpers.renderErrorPage(res, e);
-    }
+    return res.redirect(`/reports/${report._id.toString()}`);
+  } catch (e) {
+    return helpers.renderErrorPage(res, e);
   }
-);
-
+});
 
 router.post("/:id/comment", async (req, res) => {
   try {
