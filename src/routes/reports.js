@@ -9,7 +9,11 @@ const router = new Router();
 router.get("/", async (req, res) => {
   try {
     const reportList = await reports.getReportList();
-    return res.render("reports", {reports: reportList,user: req.session.user});
+    return res.render("reports", {
+      title: "Reports",
+      reports: reportList,
+      user: req.session.user
+    });
   } catch (e) {
     return helpers.renderErrorPage(res, e);
   }
@@ -21,7 +25,10 @@ router.get("/new", (req, res) => {
     if (req.session.user === undefined)
       throw new helpers.UnauthorizedError();
 
-    return res.render("create-report", { title: "Create Report",user: req.session.user });
+    return res.render("create-report", {
+      title: "Create Report",
+      user: req.session.user
+    });
   } catch (e) {
     return helpers.renderErrorPage(res, e);
   }
@@ -31,60 +38,83 @@ router.get("/new", (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     const report = await reports.getReport(req.params.id, req.query.sort);
-    return res.render("report", {report, sort: req.query.sort, user: req.session.user});
+    return res.render("report", {
+      title: report.title,
+      report,
+      sort: req.query.sort,
+      user: req.session.user
+    });
   } catch (e) {
     return helpers.renderErrorPage(res, e);
   }
 });
 
 
-router.post(
-  "/",
-  upload.array("photos", 5), // "photos" must match
-  async (req, res) => {
-    try {
-      if (req.session.user === undefined)
-        throw new helpers.UnauthorizedError();
+router.post("/", upload.array("photos", 5), async (req, res) => {
+  try {
+    if (req.session.user === undefined)
+      throw new helpers.UnauthorizedError();
 
-      const userId = req.session.user._id;
+    const authorId = req.session.user._id;
+    const {title, desc, crime, state, city, area, zipcode, anonymous} = req.body;
 
-      const {
-        title,
-        desc,
-        crime,
-        state,
-        city,
-        area,
-        zipcode,
-        anonymous
-      } = req.body;
+    // Map uploaded files to public URLs
+    const imgPaths =
+      Array.isArray(req.files) && req.files.length > 0
+        ? req.files.map((f) => `/public/uploads/reports/${f.filename}`)
+        : [];
 
-      // Map uploaded files to public URLs
-      const imgPaths =
-        Array.isArray(req.files) && req.files.length > 0
-          ? req.files.map((f) => `/public/uploads/reports/${f.filename}`)
-          : [];
+    const report = await reports.createReport(authorId, title, desc,
+      crime, state, city, area, zipcode, imgPaths, anonymous === "on");
 
-      const report = await reports.createReport(userId, {
-        title,
-        desc,
-        crime,
-        state,
-        city,
-        area,
-        zipcode,
-        imgPaths,
-        isAnonymous: anonymous === "on"
-      });
-
-      return res.redirect(`/reports/${report._id.toString()}`);
-    } catch (e) {
-
-      return helpers.renderErrorPage(res, e);
-    }
+    return res.redirect(`/reports/${report._id.toString()}`);
+  } catch (e) {
+    return helpers.renderErrorPage(res, e);
   }
-);
+});
 
+router.post("/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const report = await reports.getReport(id);
+    if (!report.author_id.equals(req.session.user?._id))
+      throw new helpers.UnauthorizedError();
+
+    const {title, desc, crime, state, city, area, zipcode, anonymous} = req.body;
+    await reports.updateReport(id, title, desc, crime, state, city, area, zipcode, anonymous === "on");
+
+    return res.redirect(`/reports/${report._id.toString()}`);
+  } catch (e) {
+    return helpers.renderErrorPage(res, e);
+  }
+});
+
+router.get("/:id/delete", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const report = await reports.getReport(id);
+    if (!report.author_id.equals(req.session.user._id))
+      throw new helpers.UnauthorizedError();
+
+    await reports.deleteReport(id);
+
+    return res.redirect("/reports");
+  } catch (e) {
+    return helpers.renderErrorPage(res, e);
+  }
+});
+
+router.get("/:id/edit", async (req, res) => {
+  try {
+    return res.render("edit-report", {
+      title: "Edit Report",
+      report: await reports.getReport(req.params.id),
+      user: req.session.user
+    });
+  } catch (e) {
+    return helpers.renderErrorPage(res, e);
+  }
+})
 
 router.post("/:id/comment", async (req, res) => {
   try {

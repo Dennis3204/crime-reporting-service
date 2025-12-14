@@ -3,65 +3,50 @@ import * as users from "./users.js";
 import * as collections from "../config/mongoCollections.js";
 import * as errors from "../helpers/errors.js";
 import * as validation from "../helpers/validation.js";
-import { ObjectId } from "mongodb";
 
+export const createReport = async (authorId, title, desc, crime, state, city,
+                                   area, zipcode, imgPaths, isAnonymous) => {
 
-export const createReport = async (
-  authorId,
-  {
-    title,
-    desc,
-    crime,
-    state,
-    city,
-    area,
-    zipcode,
-    imgPaths,
-    isAnonymous
-  }
-) => {
-  // validate IDs & strings using your helper functions
-  const validAuthorId = validation.validateObjectId(authorId, 'authorId');
-  const validTitle = validation.validateString(title, 'title');
-  const validDesc = validation.validateString(desc, 'description');
-  const validCrime = validation.validateString(crime, 'crime');
-  const validState = validation.validateString(state, 'state');
-  const validCity = validation.validateString(city, 'city');
-  const validArea = validation.validateString(area, 'area');
-  const validZip = validation.validateZip(zipcode, 'zipcode');
-  const validAnon = Boolean(isAnonymous);
-
-  const imgArray = Array.isArray(imgPaths) ? imgPaths : [];
-
-  const reportDoc = {
-    author_id: validAuthorId,
-    title: validTitle,
-    desc: validDesc,
-    img: imgArray,
-    crime: validCrime,
-    state: validState,
-    city: validCity,
-    area: validArea,
-    zipcode: validZip,
-    upvotes: 0,
-    downvotes: 0,
-    comments: [],
-    isAnonymous: validAnon,
-    createdAt: new Date()
-  };
+  const img = Array.isArray(imgPaths) ? imgPaths : [];
+  let report = {author_id: authorId, title, desc, crime, state, city, area, zipcode, img, is_anonymous: isAnonymous};
+  validation.validateReport(report);
+  report.created_at = new Date();
+  report.edited_at = new Date();
 
   const reports = await collections.reports();
-  const insertInfo = await reports.insertOne(reportDoc);
-
-
-  if (!insertInfo.acknowledged || !insertInfo.insertedId) {
-    throw new Error('Could not create report');
+  const result = await reports.insertOne(report);
+  if (!result.acknowledged || !result.insertedId) {
+    throw new Error("Could not create report");
   }
 
-  reportDoc._id = insertInfo.insertedId;
-  return reportDoc;
+  report._id = result.insertedId;
+  return report;
 };
 
+export const updateReport = async (id, title, desc, crime, state, city, area, zipcode, isAnonymous) => {
+
+  id = validation.validateObjectId(id, "report ID");
+  let reportData = {title, desc, crime, state, city, area, zipcode, is_anonymous: isAnonymous};
+  reportData = validation.validateReportData(reportData);
+  reportData.edited_at = new Date();
+
+  const reports = await collections.reports();
+  const result = await reports.updateOne({_id: id}, {$set: reportData});
+  if (!result.acknowledged)
+    throw new Error("Could not update report");
+  else if (result.matchedCount === 0)
+    throw new errors.NotFoundError("Report not found");
+};
+
+export const deleteReport = async (id) => {
+  id = validation.validateObjectId(id, "report ID");
+  const reports = await collections.reports();
+  const result = await reports.deleteOne({_id: id});
+  if (!result.acknowledged)
+    throw new Error("Could not delete report");
+  else if (result.deletedCount === 0)
+    throw new errors.NotFoundError("Report not found");
+};
 
 export const getReportList = async () => {
   const reports = await collections.reports();
@@ -87,7 +72,7 @@ export const getReport = async (id, commentSort = "best") => {
   report.comments = await comments.getCommentsForReport(id);
   for (const comment of report.comments) {
     comment.author = await users.getUsername(comment.author_id);
-    comment.time = new Date(comment.timestamp).toLocaleString();
+    comment.time = comment.created_at.toLocaleString();
     comment.score = comment.liked_by.length - comment.disliked_by.length;
   }
 
@@ -97,9 +82,9 @@ export const getReport = async (id, commentSort = "best") => {
   else if (commentSort === "worst")
     sortFunc = (a, b) => (a.score - b.score);
   else if (commentSort === "newest")
-    sortFunc = (a, b) => (b.timestamp - a.timestamp);
+    sortFunc = (a, b) => (b.created_at - a.created_at);
   else if (commentSort === "oldest")
-    sortFunc = (a, b) => (a.timestamp - b.timestamp);
+    sortFunc = (a, b) => (a.created_at - b.created_at);
   else
     throw new errors.BadRequestError("Invalid comment sort order.");
   report.comments.sort(sortFunc);

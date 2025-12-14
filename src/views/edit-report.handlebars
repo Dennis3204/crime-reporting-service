@@ -1,0 +1,72 @@
+<main>
+  <h1>Edit a Crime Report</h1>
+
+  {{#if error}}
+    <p class="error">{{error}}</p>
+  {{/if}}
+
+  {{#with report}}
+    <form
+      action="/reports/{{_id}}"
+      method="POST"
+      id="report-form"
+    >
+      <div>
+        <label for="title">Title*</label>
+        <input type="text" id="title" name="title" value="{{title}}" required>
+      </div>
+
+      <div>
+        <label for="desc">Description*</label>
+        <textarea id="desc" name="desc" required>{{desc}}</textarea>
+      </div>
+
+      <div>
+        <label for="crime">Crime Type*</label>
+        <input type="text" id="crime" name="crime" value="{{crime}}" required>
+        {{!-- Later you can make this a <select> with fixed types --}}
+      </div>
+
+      <fieldset>
+        <legend>Location*</legend>
+
+        <div>
+          <label for="state">State</label>
+          <input type="text" id="state" name="state" value="{{state}}" required>
+        </div>
+
+        <div>
+          <label for="city">City</label>
+          <input type="text" id="city" name="city" value="{{city}}" required>
+        </div>
+
+        <div>
+          <label for="area">Neighborhood / Area</label>
+          <input type="text" id="area" name="area" value="{{area}}" required>
+        </div>
+
+        <div>
+          <label for="zipcode">ZIP Code</label>
+          <input
+            type="text"
+            id="zipcode"
+            name="zipcode"
+            required
+            pattern="\d{5}"
+            title="5-digit ZIP code"
+            value="{{zipcode}}"
+          >
+        </div>
+      </fieldset>
+
+      <div>
+        <label>
+          <input type="checkbox" name="anonymous" {{#if is_anonymous}}checked{{/if}}>
+          Post as anonymous
+        </label>
+      </div>
+
+      <button type="submit">Submit Report</button>
+    </form>
+  {{/with}}
+</main>
