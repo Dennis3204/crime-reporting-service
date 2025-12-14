@@ -8,40 +8,37 @@
     {{/if}}
 
     <form action="/signup" method="POST" id="signup-form">
-        <label for="username">Username</label>
+        <label for="username">Username: </label>
         <input type="text" name="username" id="username" required>
-
-        <label for="first_name">First Name</label>
+        <br>
+        <label for="first_name">First Name: </label>
         <input type="text" name="first_name" id="first_name" required>
-
-        <label for="last_name">Last Name</label>
+        <br>
+        <label for="last_name">Last Name: </label>
         <input type="text" name="last_name" id="last_name" required>
-
-        <label for="age">Age</label>
+        <br>
+        <label for="age">Age: </label>
         <input type="number" name="age" id="age" required>
-
-        <label for="password">Password</label>
+        <br>
+        <label for="password">Password: </label>
         <input type="password" name="password" id="password" required>
-
-
         <h3>Location</h3>
-
-        <label for="area">Neighborhood/Area</label>
+        <label for="area">Neighborhood/Area: </label>
         <input type="text" name="area" id="area" required>
-
-        <label for="city">City</label>
+        <br>
+        <label for="city">City: </label>
         <input type="text" name="city" id="city" required>
-
-        <label for="state">State</label>
+        <br>
+        <label for="state">State: </label>
         <input type="text" name="state" id="state" required>
-
-        <label for="zipcode">ZIP Code</label>
+        <br>
+        <label for="zipcode">ZIP Code: </label>
         <input type="text" name="zipcode" id="zipcode" required pattern="\d{5}" title="Enter 5-digit ZIP code">
-
+        <br>
         <button type="submit">Create Account</button>
     </form>
 
-    <p>Already have an account? <a href="/login">Log in here</a></p>
+    <p>Already have an account? <a href="/login">Log in here.</a></p>
 
     <script src="/public/js/signup.js"></script>
 </main>
