@@ -11,7 +11,7 @@
                 <dt>Author:</dt>
                 <dd>{{author}}</dd>
             {{/unless}}
-            <dt>Classification:</dt>
+            <dt>Crime type:</dt>
             <dd>{{crime}}</dd>
             <dt>Location:</dt>
             <dd>{{area}}, {{city}}, {{state}} ({{zipcode}})</dd>
@@ -35,8 +35,7 @@
                 <textarea id="comment" name="comment"></textarea>
                 <input type="submit" value="Submit">
             </form>
-            <p id="comment-error" hidden="hidden">Error: Comment must contain non-whitespace characters.</p>
-            <br> <!-- TODO: Remove <br> after implementing CSS styling -->
+            <p class="error" id="comment-error" hidden="hidden">Error: Comment must contain non-whitespace characters.</p>
         {{/if}}
         <form action="{{_id}}" method="GET">
             <label for="sort">Sort by:</label>

@@ -27,7 +27,7 @@ router
             return res.render('search',{title:"Search",report:result,user: req.session.user})
         }catch(e){
             if(e === "404"){
-                return res.status(404).render("search",{title:"Search", error:"Not Reports found",user: req.session.user})
+                return res.status(404).render("search",{title:"Search", error: "No reports found", user: req.session.user})
             }else{
                 return helpers.renderErrorPage(res, e);
             }

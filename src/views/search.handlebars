@@ -5,16 +5,15 @@
             <label for="target">Search by: </label>
             <select id="target" class="target" name="target">
                 <option value="title">Title</option>
-                <option value="crime">Classification</option>
+                <option value="crime">Crime Type</option>
             </select>
             <br>
-            <label for="keyword" id="keyword_label">Enter your Keyword</label>
+            <label for="keyword" id="keyword_label">Keyword: </label>
             <input type="text" name="keyword" id="keyword">
             <br>
             <button type="submit" id="submit_button">Submit</button>
         </form>
-        <a href="/map" id="map_link">Click here to search using map</a>
-        <br>
+        <p>To browse reports by ZIP code instead, <a href="/map" id="map_link">click here</a>.</p>
         <div id="error_block">
             <p id="error" class="error">{{error}}</p>
         </div>
