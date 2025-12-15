@@ -202,3 +202,8 @@ main.create-report-page > h1 {
   padding: 10px 30px;
   font-size: 16px;
 }
+
+.report-img{
+  max-width: 25%;
+  height: auto;
+}

@@ -64,7 +64,7 @@ router.post("/", async (req, res) => {
 
     req.session.user.location = updatedUser.location;
 
-    return res.render("profile", {title: "Your Profile", user: updatedUser, reports: userReports.length, success: "Profile updated successfully!!"});
+    return res.render("profile", {title: "Your Profile", user: updatedUser, reports: userReports, success: "Profile updated successfully!!"});
 });
 
 export default router;
