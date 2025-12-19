@@ -5,8 +5,8 @@ if(search_form){
     let error_div = document.getElementById('error_block')
     let error_p = document.getElementById('error')
     search_form.addEventListener('submit',(event)=>{
-        keyword = keyword_element.value
-        target = target_element.value
+        const keyword = keyword_element.value
+        const target = target_element.value
         try{
             error_div.hidden = true
             if(keyword.trim().length === 0)

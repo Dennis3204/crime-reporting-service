@@ -25,12 +25,12 @@ export const createUser = async (
 
   username = validation.validateUsername(username).toLowerCase();
   password = validation.validatePassword(password);
-  first_name = validation.validateTrimmableString(first_name, "first name");
-  last_name = validation.validateTrimmableString(last_name, "last name");
-  age = validation.validateNumber(age, "age");
-  area = validation.validateTrimmableString(area, "area");
-  city = validation.validateTrimmableString(city, "city");
-  state = validation.validateTrimmableString(state, "state");
+  first_name = validation.validateName(first_name, "first name");
+  last_name = validation.validateName(last_name, "last name");
+  age = validation.validateAge(age);
+  area = validation.validateArea(area);
+  city = validation.validateCity(city);
+  state = validation.validateState(state);
   zipcode = validation.validateZipcode(zipcode);
 
   const userCollection = await users();
@@ -56,7 +56,8 @@ export const createUser = async (
     reports: [],
     post: [],
     comments_reports: [],
-    comments_posts: []
+    comments_posts: [],
+    comments_received: []
   };
 
   const insertInfo = await userCollection.insertOne(newUser);
@@ -69,8 +70,8 @@ export const createUser = async (
 
 export const checkUser = async (username, password) => {
 
-  username = validation.validateTrimmableString(username, "username").toLowerCase();
-  password = validation.validateString(password, "password");
+  username = validation.validateUsername(username).toLowerCase();
+  password = validation.validatePassword(password);
 
   const userCollection = await users();
   const user = await userCollection.findOne({ username });

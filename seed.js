@@ -25,9 +25,9 @@ const seed = async () => {
     "Smith",
     23,
     "Password123!",
-    "alice@example.com",
-    "NYC",
-    "Some State",
+    "Williamsburg",
+    "Brooklyn",
+    "NY",
     "11211"
   );
 
@@ -37,9 +37,9 @@ const seed = async () => {
     "Johnson",
     30,
     "Password123!",
-    "bob@example.com",
-    "NYC",
-    "Some State",
+    "Upper East Side",
+    "Manhattan",
+    "NY",
     "11211"
   );
 

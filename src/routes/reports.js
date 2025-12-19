@@ -135,9 +135,16 @@ router.get("/:id/delete", async (req, res) => {
 
 router.get("/:id/edit", async (req, res) => {
   try {
+    if (req.session.user === undefined)
+      throw new helpers.UnauthorizedError();
+
+    const report = await reports.getReport(req.params.id);
+    if (!report.author_id.equals(req.session.user._id))
+      throw new helpers.UnauthorizedError();
+
     return res.render("edit-report", {
       title: "Edit Report",
-      report: await reports.getReport(req.params.id),
+      report,
       user: req.session.user
     });
   } catch (e) {

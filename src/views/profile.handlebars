@@ -39,7 +39,7 @@
         <input type="text" id="state" name="state" value="{{user.location.state}}" required>
         <br>
         <label for="zipcode">ZIP Code: </label>
-        <input type="text" id="zipcode" name="zipcode" value="{{user.location.zipcode}}" required pattern="\d{5}">
+        <input type="text" id="zipcode" name="zipcode" value="{{user.location.zipcode}}" required pattern="[0-9]{5}">
         <br>
         <button type="submit">Save & Update</button>
     </form>

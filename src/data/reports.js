@@ -8,7 +8,19 @@ export const createReport = async (authorId, title, desc, crime, state, city,
                                    area, zipcode, imgPaths, isAnonymous) => {
 
   const img = Array.isArray(imgPaths) ? imgPaths : [];
-  let report = {author_id: authorId, title, desc, crime, state, city, area, zipcode, img, is_anonymous: isAnonymous};
+  let report = {
+    author_id: authorId,
+    title,
+    desc,
+    crime,
+    state,
+    city,
+    area,
+    zipcode,
+    img,
+    is_anonymous: isAnonymous,
+    comments: []
+  };
   validation.validateReport(report);
   report.created_at = new Date();
   report.edited_at = new Date();
@@ -20,6 +32,14 @@ export const createReport = async (authorId, title, desc, crime, state, city,
   }
 
   report._id = result.insertedId;
+
+  // Track report ownership on the author
+  const userCollection = await collections.users();
+  await userCollection.updateOne(
+    {_id: report.author_id},
+    {$addToSet: {reports: report._id}}
+  );
+
   return report;
 };
 
@@ -63,11 +83,11 @@ export const getReport = async (id, commentSort = "best") => {
   if (report === null)
     throw new errors.NotFoundError("Report not found.");
 
-    if (report.isAnonymous) {
-      report.author = "Anonymous";
-    } else {
-      report.author = await users.getUsername(report.author_id);
-    }
+  if (report.is_anonymous) {
+    report.author = "Anonymous";
+  } else {
+    report.author = await users.getUsername(report.author_id);
+  }
 
   report.comments = await comments.getCommentsForReport(id);
   for (const comment of report.comments) {

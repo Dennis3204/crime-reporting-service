@@ -30,9 +30,9 @@ router.post("/", async (req, res) => {
     }
     let { area, city, state, zipcode } = req.body;
     try {
-        area = validation.validateTrimmableString(area, "area");
-        city = validation.validateTrimmableString(city, "city");
-        state = validation.validateTrimmableString(state, "state");
+        area = validation.validateArea(area);
+        city = validation.validateCity(city);
+        state = validation.validateState(state);
         zipcode = validation.validateZipcode(zipcode);
     } catch (e) {
         return res.status(400).render("profile", {

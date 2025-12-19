@@ -13,17 +13,17 @@
     >
       <div>
         <label for="title">Title*</label>
-        <input type="text" id="title" name="title" value="{{title}}" required>
+        <input type="text" id="title" name="title" value="{{title}}" required minlength="5">
       </div>
 
       <div>
         <label for="desc">Description*</label>
-        <textarea id="desc" name="desc" required>{{desc}}</textarea>
+        <textarea id="desc" name="desc" required minlength="15">{{desc}}</textarea>
       </div>
 
       <div>
         <label for="crime">Crime Type*</label>
-        <input type="text" id="crime" name="crime" value="{{crime}}" required>
+        <input type="text" id="crime" name="crime" value="{{crime}}" required minlength="3">
       </div>
 
       <fieldset>
@@ -31,17 +31,17 @@
 
         <div>
           <label for="state">State</label>
-          <input type="text" id="state" name="state" value="{{state}}" required>
+          <input type="text" id="state" name="state" value="{{state}}" required minlength="2" pattern="[A-Za-z][A-Za-z .'-]*">
         </div>
 
         <div>
           <label for="city">City</label>
-          <input type="text" id="city" name="city" value="{{city}}" required>
+          <input type="text" id="city" name="city" value="{{city}}" required minlength="2" pattern="[A-Za-z][A-Za-z .'-]*">
         </div>
 
         <div>
           <label for="area">Neighborhood / Area</label>
-          <input type="text" id="area" name="area" value="{{area}}" required>
+          <input type="text" id="area" name="area" value="{{area}}" required minlength="2" pattern="[A-Za-z][A-Za-z .'-]*">
         </div>
 
         <div>
@@ -51,7 +51,7 @@
             id="zipcode"
             name="zipcode"
             required
-            pattern="\d{5}"
+            pattern="[0-9]{5}"
             title="5-digit ZIP code"
             value="{{zipcode}}"
           >

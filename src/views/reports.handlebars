@@ -2,9 +2,9 @@
     <h1>List of Reports</h1>
     <ul>
         {{#each reports}}
-            <li><a href="reports/{{_id}}">{{title}}</a></li>
+            <li><a href="/reports/{{_id}}">{{title}}</a></li>
         {{else}}
-            <p>No reports are available.</p>
+            <li>No reports are available.</li>
         {{/each}}
     </ul>
 </main>

@@ -8,6 +8,7 @@ const configureMiddleware = (app) => {
   app.use("/search", requireLogin);
   app.use("/map", requireLogin);
   app.use("/reports", requireLogin);
+  app.use("/comments", requireLogin);
   app.use("/logout", requireLogin);
 };
 

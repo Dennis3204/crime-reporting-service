@@ -35,6 +35,33 @@ export const addComment = async (reportId, authorId, comment) => {
   });
   if (!result.acknowledged)
     throw new errors.InternalServerError("Failed to add comment.");
+
+  const commentId = result.insertedId;
+
+  // Track comment authored by this user
+  const userCollection = await collections.users();
+  await userCollection.updateOne(
+    {_id: authorId},
+    {$addToSet: {comments_reports: commentId}}
+  );
+
+  // Track comment on the report itself
+  const reportCollection = await collections.reports();
+  const report = await reportCollection.findOne({_id: reportId}, {projection: {author_id: 1}});
+  if (report === null)
+    throw new errors.NotFoundError("Report not found.");
+
+  await reportCollection.updateOne(
+    {_id: reportId},
+    {$addToSet: {comments: commentId}}
+  );
+
+  // Track comment received by the report author (owner)
+  await userCollection.updateOne(
+    {_id: report.author_id},
+    {$addToSet: {comments_received: commentId}}
+  );
+
   return result;
 };
 

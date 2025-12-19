@@ -2,8 +2,10 @@
     {{#with report}}
         <h1>{{title}}</h1>
         {{#ifEq author ../user.username}}
-            <a href="/reports/{{_id}}/edit"><button>Edit report</button></a>
-            <a href="/reports/{{_id}}/delete"><button>Delete report</button></a>
+            <div class="actions">
+                <a class="btn" href="/reports/{{_id}}/edit">Edit report</a>
+                <a class="btn btn-danger" href="/reports/{{_id}}/delete">Delete report</a>
+            </div>
         {{/ifEq}}
         <h2>Details</h2>
         <dl>
@@ -30,14 +32,14 @@
         <p>{{desc}}</p>
         <h2>Comments</h2>
         {{#if ../user}}
-            <form id="comment-form" action="{{_id}}/comment" method="POST">
+            <form id="comment-form" action="/reports/{{_id}}/comment" method="POST">
                 <label for="comment">Leave a comment:</label>
-                <textarea id="comment" name="comment"></textarea>
+                <textarea id="comment" name="comment" required></textarea>
                 <input type="submit" value="Submit">
             </form>
             <p class="error" id="comment-error" hidden="hidden">Error: Comment must contain non-whitespace characters.</p>
         {{/if}}
-        <form action="{{_id}}" method="GET">
+        <form action="/reports/{{_id}}" method="GET">
             <label for="sort">Sort by:</label>
             <select id="sort" name="sort">
                 <option value="best" {{#ifEq ../sort "best"}}selected{{/ifEq}}>Highest score first</option>
@@ -47,25 +49,27 @@
             </select>
             <input type="submit" value="Sort">
         </form>
-        <dl>
+        <ul class="comment-list">
             {{#each comments}}
-                <dt>Posted by {{author}} ({{time}}):</dt>
-                <dd>{{comment}}</dd>
-                <div>Score: {{score}}</div>
-                {{#if ../../user}}
-                    <div>
-                        <form action="/comments/{{_id}}/like" method="POST">
-                            <input type="submit" value="Like">
-                        </form>
-                        <form action="/comments/{{_id}}/dislike" method="POST">
-                            <input type="submit" value="Dislike">
-                        </form>
-                    </div>
-                {{/if}}
+                <li class="comment">
+                    <div class="comment-meta">Posted by {{author}} ({{time}})</div>
+                    <div class="comment-body">{{comment}}</div>
+                    <div class="comment-score">Score: {{score}}</div>
+                    {{#if ../../user}}
+                        <div class="comment-actions">
+                            <form action="/comments/{{_id}}/like" method="POST">
+                                <input type="submit" value="Like">
+                            </form>
+                            <form action="/comments/{{_id}}/dislike" method="POST">
+                                <input type="submit" value="Dislike">
+                            </form>
+                        </div>
+                    {{/if}}
+                </li>
             {{else}}
-                <p>No comments yet.</p>
+                <li>No comments yet.</li>
             {{/each}}
-        </dl>
+        </ul>
     {{/with}}
 </main>
 <script type="module" src="/js/report.js"></script>

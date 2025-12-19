@@ -9,31 +9,33 @@
 
     <form action="/signup" method="POST" id="signup-form">
         <label for="username">Username: </label>
-        <input type="text" name="username" id="username" required>
+        <input type="text" name="username" id="username" required minlength="3" maxlength="20" pattern="(?=.*[A-Za-z])[A-Za-z0-9]{3,20}" title="3–20 characters, letters/numbers only, must include at least one letter." aria-describedby="username-hint">
+        <div id="username-hint" class="hint">3–20 characters, letters/numbers only, must include at least one letter.</div>
         <br>
         <label for="first_name">First Name: </label>
-        <input type="text" name="first_name" id="first_name" required>
+        <input type="text" name="first_name" id="first_name" required minlength="2" pattern="[A-Za-z][A-Za-z .'-]*" title="Letters/spaces only (min 2 characters).">
         <br>
         <label for="last_name">Last Name: </label>
-        <input type="text" name="last_name" id="last_name" required>
+        <input type="text" name="last_name" id="last_name" required minlength="2" pattern="[A-Za-z][A-Za-z .'-]*" title="Letters/spaces only (min 2 characters).">
         <br>
         <label for="age">Age: </label>
-        <input type="number" name="age" id="age" required>
+        <input type="number" name="age" id="age" required min="13" max="120" step="1" title="Age must be between 13 and 120.">
         <br>
         <label for="password">Password: </label>
-        <input type="password" name="password" id="password" required>
+        <input type="password" name="password" id="password" required minlength="8" pattern="(?=.*[A-Za-z])(?=.*[0-9]).{8,}" title="At least 8 characters and must include at least one letter and one number." aria-describedby="password-hint">
+        <div id="password-hint" class="hint">At least 8 characters and must include at least one letter and one number.</div>
         <h3>Location</h3>
         <label for="area">Neighborhood/Area: </label>
-        <input type="text" name="area" id="area" required>
+        <input type="text" name="area" id="area" required minlength="2" pattern="[A-Za-z][A-Za-z .'-]*" title="Letters/spaces only (min 2 characters).">
         <br>
         <label for="city">City: </label>
-        <input type="text" name="city" id="city" required>
+        <input type="text" name="city" id="city" required minlength="2" pattern="[A-Za-z][A-Za-z .'-]*" title="Letters/spaces only (min 2 characters).">
         <br>
         <label for="state">State: </label>
-        <input type="text" name="state" id="state" required>
+        <input type="text" name="state" id="state" required minlength="2" pattern="[A-Za-z][A-Za-z .'-]*" title="Letters only (e.g. NY, New York).">
         <br>
         <label for="zipcode">ZIP Code: </label>
-        <input type="text" name="zipcode" id="zipcode" required pattern="\d{5}" title="Enter 5-digit ZIP code">
+        <input type="text" name="zipcode" id="zipcode" required pattern="[0-9]{5}" title="Enter 5-digit ZIP code">
         <br>
         <button type="submit">Create Account</button>
     </form>
